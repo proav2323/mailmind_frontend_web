@@ -14,13 +14,205 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --primary: #7c5cfc;
+    --primary-light: #9b84ff;
+    --primary-dark: #5e3bee;
+
+    --secondary: #4f8cff;
+    --secondary-light: #73a8ff;
+
+    --accent: #00c2ff;
+
+    /* ===============================
+     BACKGROUND COLORS
+  =============================== */
+
+    --bg-primary: #0f1117;
+    --bg-secondary: #171a23;
+    --bg-tertiary: #202431;
+    --bg-card: #1b2030;
+    --bg-hover: #262c3e;
+    --bg-sidebar: #131722;
+    --bg-input: #1d2333;
+
+    /* ===============================
+     TEXT COLORS
+  =============================== */
+
+    --text-primary: #ffffff;
+    --text-secondary: #c7ccd9;
+    --text-muted: #8f97a8;
+    --text-disabled: #666d7e;
+
+    /* ===============================
+     BORDER COLORS
+  =============================== */
+
+    --border: #2a3144;
+    --border-light: #3a4257;
+
+    /* ===============================
+     STATUS COLORS
+  =============================== */
+
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --info: #3b82f6;
+
+    /* ===============================
+     CATEGORY COLORS
+  =============================== */
+
+    --assignment: #7c5cfc;
+    --event: #00c2ff;
+    --exam: #ff5c8a;
+    --placement: #f59e0b;
+    --reminder: #22c55e;
+    --fees: #ff8a00;
+    --lecture: #4f8cff;
+
+    /* ===============================
+     SHADOWS
+  =============================== */
+
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.18);
+    --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.25);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+    /* ===============================
+     GRADIENTS
+  =============================== */
+
+    --gradient-primary: linear-gradient(135deg, #7c5cfc, #5b7cfa, #00c2ff);
+
+    --gradient-card: linear-gradient(180deg, #1d2333, #171a23);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    /* ===============================
+     PRIMARY BRAND COLORS
+  =============================== */
+
+    --primary: #6d5dfc;
+    --primary-light: #8c7bff;
+    --primary-dark: #5744f6;
+
+    --secondary: #4f8cff;
+    --secondary-light: #7baeff;
+
+    --accent: #00b8f5;
+
+    /* ===============================
+     BACKGROUND COLORS
+  =============================== */
+
+    --bg-primary: #f5f7ff;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f0f3fa;
+    --bg-card: #ffffff;
+    --bg-hover: #eef2ff;
+    --bg-sidebar: #fafbff;
+    --bg-input: #f8fafc;
+
+    /* ===============================
+     TEXT COLORS
+  =============================== */
+
+    --text-primary: #1c2333;
+    --text-secondary: #556070;
+    --text-muted: #7b8798;
+    --text-disabled: #a4afbe;
+
+    /* ===============================
+     BORDER COLORS
+  =============================== */
+
+    --border: #e4e8f0;
+    --border-light: #f2f5fa;
+
+    /* ===============================
+     STATUS COLORS
+  =============================== */
+
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --info: #2563eb;
+
+    /* ===============================
+     CATEGORY COLORS
+  =============================== */
+
+    --assignment: #7c5cfc;
+    --event: #00b8f5;
+    --exam: #ff4d7d;
+    --placement: #f59e0b;
+    --reminder: #22c55e;
+    --fees: #fb923c;
+    --lecture: #3b82f6;
+
+    /* ===============================
+     SOFT BACKGROUNDS
+  =============================== */
+
+    --assignment-bg: #f1edff;
+    --event-bg: #eaf9ff;
+    --exam-bg: #ffeaf1;
+    --placement-bg: #fff5e6;
+    --reminder-bg: #ecfdf3;
+    --fees-bg: #fff4eb;
+    --lecture-bg: #eef5ff;
+
+    /* ===============================
+     SHADOWS
+  =============================== */
+
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+    --shadow-md: 0 8px 20px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 18px 40px rgba(15, 23, 42, 0.12);
+
+    /* ===============================
+     GRADIENTS
+  =============================== */
+
+    --gradient-primary: linear-gradient(135deg, #6d5dfc, #5b7cfa, #00b8f5);
+
+    --gradient-card: linear-gradient(180deg, #ffffff, #f8faff);
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.glass {
+  backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.gradient {
+  background: var(--gradient-primary);
+}
+
+.google {
+  transition: all ease-in-out 0.3s;
+}
+
+.microsoft {
+  transition: all ease-in-out 0.3s;
+}
+
+.google:hover {
+  background: var(--bg-secondary);
+  cursor: pointer;
+}
+
+.microsoft:hover {
+  background: var(--bg-secondary);
+  cursor: pointer;
 }
