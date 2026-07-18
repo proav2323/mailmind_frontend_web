@@ -1,22 +1,43 @@
 "use client";
 
 import Image from "next/image";
-import { signIn, useSession } from "next-auth/react";
 import { useState } from "react";
 import Logo from "../favicon.png";
 
 export default function Login() {
   const [isGoogleLoading, setGoogleIsLoading] = useState(false);
-  const { data: session } = useSession();
   const handleGoogleSignIn = async () => {
     setGoogleIsLoading(true);
     try {
-      const res = await signIn("google");
-      setGoogleIsLoading(false);
-    } catch (err: unknown) {
-      console.log(`error: ${err}`);
-      setGoogleIsLoading(false);
-    }
+      const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+      const options = {
+        redirect_uri:
+          process.env.NODE_ENV === "production"
+            ? `${process.env.URL}/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`
+            : `http://localhost:3000/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`,
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+        access_type: "offline",
+        response_type: "code",
+        prompt: "consent",
+        scope: [
+          "https://www.googleapis.com/auth/gmail.compose",
+          "https://www.googleapis.com/auth/gmail.insert",
+          "https://www.googleapis.com/auth/gmail.readonly",
+          "https://www.googleapis.com/auth/gmail.labels",
+          "https://www.googleapis.com/auth/gmail.modify",
+          "https://www.googleapis.com/auth/gmail.metadata",
+          "https://www.googleapis.com/auth/gmail.send",
+          "https://www.googleapis.com/auth/contacts.readonly",
+          "https://www.googleapis.com/auth/user.emails.read",
+          "https://www.googleapis.com/auth/userinfo.profile",
+          "https://www.googleapis.com/auth/userinfo.email",
+        ].join(" "),
+      };
+
+      const qs = new URLSearchParams(options).toString();
+      console.log(`${rootUrl}?${qs}`);
+      window.location.href = `${rootUrl}?${qs}`;
+    } catch (err: unknown) {}
   };
   return (
     <div className='min-h-screen flex items-center justify-center p-2'>
@@ -111,14 +132,20 @@ export default function Login() {
                   onClick={handleGoogleSignIn}
                   className='google w-full flex items-center justify-center gap-4 border rounded-xl py-4 font-semibold transition bg-amber-600'
                 >
-                  <Image
-                    alt='google'
-                    width='6'
-                    height='6'
-                    src='https://www.svgrepo.com/show/475656/google-color.svg'
-                    className='w-6'
-                  ></Image>
-                  Continue with Google
+                  {isGoogleLoading ? (
+                    <div>loading</div>
+                  ) : (
+                    <div className='flex flex-row gap-2 items-center justify-center w-full'>
+                      <Image
+                        alt='google'
+                        width='6'
+                        height='6'
+                        src='https://www.svgrepo.com/show/475656/google-color.svg'
+                        className='w-6'
+                      ></Image>
+                      Continue with Google
+                    </div>
+                  )}
                 </button>
 
                 <button className='microsoft w-full flex items-center justify-center gap-4 border rounded-xl py-4 font-semibold transition bg-sky-600'>
