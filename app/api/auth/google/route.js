@@ -31,6 +31,7 @@ export async function GET(request) {
       ],
       accessToken: "",
       serverAuthCode: code,
+      pord: process.env.NODE_ENV === "production",
     }),
   });
 
