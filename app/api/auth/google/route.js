@@ -9,6 +9,13 @@ export async function GET(request) {
     return NextResponse.json({ error: "No code provided" }, { status: 400 });
   }
 
+  console.log(
+    process.env.NODE_ENV === "production",
+    process.env.NODE_ENV === "production"
+      ? `${process.env.NEXT_PUBLIC_URL}/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`
+      : `http://localhost:3000/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`,
+  );
+
   let backendRes = await fetch(`${process.env.BACKEND_URL}/auth/login`, {
     method: "POST",
     body: new URLSearchParams({
