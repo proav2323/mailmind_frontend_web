@@ -13,7 +13,7 @@ export default function Login() {
       const options = {
         redirect_uri:
           process.env.NODE_ENV === "production"
-            ? `${process.env.URL}/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`
+            ? `${process.env.NEXT_PUBLIC_URL}/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`
             : `http://localhost:3000/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`,
         client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
         access_type: "offline",
