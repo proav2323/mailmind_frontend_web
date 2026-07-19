@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { auth, SetUser } from "../../../services/auth/auth";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
-
+  console.log(
+    process.env.NODE_ENV === "production"
+      ? `${process.env.NEXT_PUBLIC_URL}/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`
+      : `http://localhost:3000/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`,
+  );
   if (!code) {
     return NextResponse.json({ error: "No code provided" }, { status: 400 });
   }
@@ -31,7 +36,7 @@ export async function GET(request) {
       ],
       accessToken: "",
       serverAuthCode: code,
-      pord: process.env.NODE_ENV === "production",
+      prod: process.env.NODE_ENV === "production",
     }),
   });
 
@@ -46,18 +51,25 @@ export async function GET(request) {
   let token = await backendRes.text();
 
   const cookieStore = await cookies();
-  cookieStore.set("session_user", JSON.stringify(token), {
+  cookieStore.set("token", JSON.stringify(token), {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
     path: "/",
+    domain: process.env.BACKEND_URL,
   });
 
-  let userDeatils = await fetch(`${process.env.BACKEND_URL}/auth`, {
-    method: "GET",
-  });
+  let userDeatils = await auth();
+
+  if (!userDeatils.ok || userDeatils.status === 500) {
+    const error = await userDeatils.text();
+    return NextResponse.json(
+      { error: "error occured" + error },
+      { status: 400 },
+    );
+  }
+
   let user = await userDeatils.json();
-  console.log(user);
-
+  SetUser(user);
   return NextResponse.redirect(new URL("/", request.url));
 }
