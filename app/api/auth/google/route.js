@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { auth, SetUser } from "../../../services/auth/auth";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -46,21 +45,9 @@ export async function GET(request) {
     );
   }
 
-  let token = await backendRes.text();
+  let tokenS = await backendRes.text();
   let cookesS = await cookies();
-  cookesS.set("token", token, {});
+  cookesS.set("token", tokenS, {});
 
-  let userDeatils = await auth();
-
-  if (!userDeatils.ok || userDeatils.status === 500) {
-    const error = await userDeatils.text();
-    return NextResponse.json(
-      { error: "error occured" + error },
-      { status: 400 },
-    );
-  }
-
-  let user = await userDeatils.json();
-  SetUser(user);
-  return NextResponse.redirect(new URL("/", request.url));
+  return NextResponse.redirect(new URL("/api/auth", request.url));
 }

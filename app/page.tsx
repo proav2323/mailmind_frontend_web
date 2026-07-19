@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useUser } from "./states/user";
-import { auth, SetUser } from "./services/auth/auth";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -11,24 +10,9 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    auth()
-      .then(async (value) => {
-        if (!value.ok || value.status === 500) {
-          const error = await value.text();
-          console.log(error);
-          setIsLoading(false);
-          router.push("/login");
-          return;
-        }
-        const user = await value.json();
-        SetUser(user);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-        router.push("/login");
-      });
+    if (user === null) {
+      router.push("/api/auth");
+    }
   }, [router]);
 
   return user !== null ? (
