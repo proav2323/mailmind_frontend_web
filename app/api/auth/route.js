@@ -5,6 +5,9 @@ import { cookies } from "next/headers";
 export async function GET(req) {
   const cookiesS = await cookies();
   const token = cookiesS.get("token");
+  if (token === undefined || token === null) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
   const res = await fetch(`${process.env.BACKEND_URL}/auth`, {
     method: "GET",
     headers: { Authorization: `Bearer ${token.value}` },
