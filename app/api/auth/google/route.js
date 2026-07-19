@@ -5,11 +5,6 @@ import { auth, SetUser } from "../../../services/auth/auth";
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
-  console.log(
-    process.env.NODE_ENV === "production"
-      ? `${process.env.NEXT_PUBLIC_URL}/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`
-      : `http://localhost:3000/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`,
-  );
   if (!code) {
     return NextResponse.json({ error: "No code provided" }, { status: 400 });
   }
@@ -36,7 +31,10 @@ export async function GET(request) {
       ],
       accessToken: "",
       serverAuthCode: code,
-      prod: process.env.NODE_ENV === "production",
+      redirectUrl:
+        process.env.NODE_ENV === "production"
+          ? `${process.env.NEXT_PUBLIC_URL}/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`
+          : `http://localhost:3000/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`,
     }),
   });
 
