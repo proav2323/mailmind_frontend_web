@@ -47,15 +47,8 @@ export async function GET(request) {
   }
 
   let token = await backendRes.text();
-
-  const cookieStore = await cookies();
-  cookieStore.set("token", JSON.stringify(token), {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    path: "/",
-    domain: process.env.BACKEND_URL,
-  });
+  let cookesS = await cookies();
+  cookesS.set("token", token, {});
 
   let userDeatils = await auth();
 
