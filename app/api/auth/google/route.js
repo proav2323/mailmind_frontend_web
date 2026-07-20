@@ -47,7 +47,13 @@ export async function GET(request) {
 
   let tokenS = await backendRes.text();
   let cookesS = await cookies();
-  cookesS.set("token", tokenS, {});
+  cookesS.set("token", tokenS, {
+    sameSite: "lax",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+  });
+  console.log(cookesS.get("token"));
 
-  return NextResponse.redirect(new URL("/api/auth", request.url));
+  return NextResponse.redirect(new URL("/", request.url));
 }

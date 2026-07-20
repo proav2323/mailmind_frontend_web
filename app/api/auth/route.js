@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { SetUser } from "../../services/auth/authState";
 import { cookies } from "next/headers";
 
 export async function GET(req) {
   const cookiesS = await cookies();
   const token = cookiesS.get("token");
+
   if (token === undefined || token === null) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.json({ error: "token not found" }, { status: 500 });
   }
   const res = await fetch(`${process.env.BACKEND_URL}/auth`, {
     method: "GET",
@@ -15,11 +15,11 @@ export async function GET(req) {
   if (!res.ok || res.status === 500) {
     const error = await res.text();
     console.log(error);
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.json({ error: error }, { status: 500 });
   }
 
   let user = await res.json();
-  SetUser(user);
 
-  return NextResponse.redirect(new URL("/", req.url));
+  // return NextResponse.redirect(new URL(`/`, req.url));
+  return NextResponse.json(user, { status: 200 });
 }
