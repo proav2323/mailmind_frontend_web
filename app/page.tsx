@@ -3,6 +3,7 @@ import StoreInitializer from "./components/storeIntializer";
 import { USERS } from "./models/user";
 import HOME from "./pages/home";
 import { headers } from "next/headers";
+import { auth } from "./actions";
 
 export default async function HomePage() {
   const res = await getUser();
@@ -31,17 +32,12 @@ export async function getUser(): Promise<{
   message: string | null;
   value: USERS | null;
 }> {
-  const host = (await headers()).get("host");
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-  const res = await fetch(`${protocol}://${host}/api/auth`, {
-    method: "GET",
-    credentials: "include",
-  });
+  const res = await auth("token");
+  const data = await res.json();
+
   if (!res.ok || res.status === 500) {
-    const error = await res.json();
-    console.log(error.error, "this si error");
-    return { status: "error occured", message: error.error, value: null };
+    return { status: "error", value: null, message: data.error };
   }
-  const user = await res.json();
-  return { status: "success", message: null, value: user };
+
+  return { status: "success", message: null, value: data };
 }

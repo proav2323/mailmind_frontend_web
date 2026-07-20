@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { USERS } from "../models/user";
 import { useUser } from "../states/user";
 
@@ -10,11 +11,13 @@ export default function StoreInitializer({
 }) {
   const { updateUser } = useUser();
 
-  if ("error" in user) {
-    updateUser(null);
-  } else {
-    updateUser(user);
-  }
+  useState(() => {
+    if ("error" in user) {
+      updateUser(null);
+    } else {
+      updateUser(user);
+    }
+  });
 
   return null;
 }
