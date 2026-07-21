@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import Logo from "../favicon.png";
+import Loader from "../components/loader";
 
 export default function Login() {
   const [isGoogleLoading, setGoogleIsLoading] = useState(false);
@@ -133,7 +134,7 @@ export default function Login() {
                   className='google w-full flex items-center justify-center gap-4 border rounded-xl py-4 font-semibold transition bg-amber-600'
                 >
                   {isGoogleLoading ? (
-                    <div>loading</div>
+                    <Loader />
                   ) : (
                     <div className='flex flex-row gap-2 items-center justify-center w-full'>
                       <Image
