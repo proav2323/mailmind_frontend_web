@@ -24,7 +24,7 @@ export async function GET(request) {
         "https://www.googleapis.com/auth/userinfo.profile",
         "https://www.googleapis.com/auth/userinfo.email",
       ],
-      accessToken: "",
+      accessToken: "heelo world",
       serverAuthCode: code,
       redirectUrl:
         process.env.NODE_ENV === "production"

@@ -1,5 +1,9 @@
 import Loader from "./components/loader";
 
 export default function Loading() {
-  return <Loader />;
+  return (
+    <div className='w-full h-screen'>
+      <Loader />
+    </div>
+  );
 }

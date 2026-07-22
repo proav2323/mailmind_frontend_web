@@ -1,6 +1,7 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 export async function auth(name: string) {
@@ -20,7 +21,25 @@ export async function auth(name: string) {
   }
 
   const user = await res.json();
+  const isYear = cookieStore.get("year");
+  return NextResponse.json(
+    {
+      user: user,
+      isYear: isYear === undefined ? false : true,
+    },
+    { status: 200 },
+  );
+}
 
-  // return NextResponse.redirect(new URL(`/`, req.url));
-  return NextResponse.json(user, { status: 200 });
+export async function setYear(year: string) {
+  const cookieStore = await cookies();
+  cookieStore.set("year", year, {
+    sameSite: "lax",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+  });
+  const host = (await headers()).get("host");
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  return redirect(`${protocol}://${host}/api/emails`);
 }

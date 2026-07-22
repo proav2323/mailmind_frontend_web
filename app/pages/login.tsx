@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import Logo from "../favicon.png";
 import Loader from "../components/loader";
+import YearSelector from "../components/yearSelector";
+import { useSnackBar } from "../states/snackbar";
 
 export default function Login() {
   const [isGoogleLoading, setGoogleIsLoading] = useState(false);
@@ -32,7 +34,6 @@ export default function Login() {
       };
 
       const qs = new URLSearchParams(options).toString();
-      console.log(`${rootUrl}?${qs}`);
       window.location.href = `${rootUrl}?${qs}`;
     } catch (err: unknown) {}
   };
