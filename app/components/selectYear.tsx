@@ -28,6 +28,12 @@ export default function Selector({
   return (
     <div className='w-[50%] h-fit p-4 rounded-md bg-[var(--bg-secondary)] flex flex-col gap-2'>
       <YearSelector year={year} setYear={setYear} />
+      <span className='dark:text-gray-600 text-shadow-black text-[11px] font-semibold'>
+        we would like you pick a year, so we can filter out your emails rather
+        than getting your all emails from gmail which can slow down your website
+        flow. we would highly recommend to select year where you want after
+        which we start filter and get your important emails in your dashboard
+      </span>
       <button
         onClick={change}
         className='w-full p-2 rounded-md bg-[var(--bg-primary)] hover:cursor-pointer'

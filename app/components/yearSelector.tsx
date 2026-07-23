@@ -31,7 +31,7 @@ export default function YearSelector({
           className='block w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 bg-[var(--bg-primary)] text-[var(--text-primary)]'
         >
           <option value='' disabled className='text-sm text-gray-500'>
-            year when you started your college/work
+            select year
           </option>
           {years.map((year) => (
             <option key={year} value={year}>
