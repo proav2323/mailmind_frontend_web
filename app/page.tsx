@@ -21,9 +21,6 @@ export default async function HomePage() {
       </div>
     );
   }
-  if (res.isYear === true && res.value !== null) {
-    return redirect(`${protocol}://${host}/api/email`);
-  }
 
   return (
     <div className='w-full h-full'>
