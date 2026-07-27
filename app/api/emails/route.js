@@ -12,7 +12,7 @@ export async function GET(req) {
     headers: {
       Authorization: `Bearer ${token.value}`,
       year: year,
-      isFirst: true,
+      first: true,
     },
   });
 
