@@ -9,6 +9,7 @@ export async function GET(req) {
 
   const emailRes = await fetch(`${process.env.BACKEND_URL}/emails`, {
     method: "GET",
+    signal: AbortSignal.timeout(480000),
     headers: {
       Authorization: `Bearer ${token.value}`,
       year: year.value,
