@@ -49,7 +49,10 @@ export async function GET(request) {
     secure: process.env.NODE_ENV === "production",
     path: "/",
   });
-  console.log(cookesS.get("token"));
+  const year = cookesS.get("year");
+  if (!year) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
 
   return NextResponse.redirect(new URL("/", request.url));
 }

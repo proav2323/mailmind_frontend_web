@@ -1,10 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Loader from "../components/loader";
 import { useUser } from "../states/user";
 
 export default function HOME() {
   const { user } = useUser();
+  const router = useRouter();
 
   return user !== null ? (
     <div className='flex flex-col flex-1 items-center justify-center font-sans  w-full min-h-screen'>

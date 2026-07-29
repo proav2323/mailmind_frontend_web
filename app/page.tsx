@@ -1,11 +1,10 @@
 "use server";
 import { redirect } from "next/navigation";
-import StoreInitializer from "./components/storeIntializer";
 import { USERS } from "./models/user";
-import HOME from "./pages/home";
 import { headers } from "next/headers";
-import { auth, setYear } from "./actions";
+import { auth, getNewEmails, setYear } from "./actions";
 import Selector from "./components/selectYear";
+import { NextResponse } from "next/server";
 
 export default async function HomePage() {
   const res = await getUser();
@@ -14,24 +13,19 @@ export default async function HomePage() {
   if (res.value === null) {
     return redirect(`${protocol}://${host}/login`);
   }
-  if (res.isYear === false && res.value !== null) {
-    return (
-      <div className='w-full min-h-screen flex flex-row justify-center items-center'>
-        <Selector save={setYear} />
-      </div>
-    );
+  if (res.value !== null && res.isYear === true) {
+    const stringData = await getNewEmails();
+    const data = JSON.parse(stringData);
+    if (data.status === 200 && data.error === "null") {
+      return redirect(`${protocol}://${host}/dashboard`);
+    } else {
+      return NextResponse.json({ error: data.error, status: data.status });
+    }
   }
 
   return (
-    <div className='w-full h-full'>
-      <StoreInitializer
-        user={
-          res.value === null
-            ? JSON.parse(JSON.stringify({ error: "no-value" }))
-            : JSON.parse(JSON.stringify(res.value))
-        }
-      />
-      <HOME />
+    <div className='w-full min-h-screen flex flex-row justify-center items-center'>
+      <Selector save={setYear} />
     </div>
   );
 }
@@ -43,9 +37,8 @@ export async function getUser(): Promise<{
   isYear: boolean;
 }> {
   const res = await auth("token");
-  const data = await res.json();
-
-  if (!res.ok || res.status === 500) {
+  const data = JSON.parse(res);
+  if (data.error !== null) {
     return {
       status: "error",
       value: null,

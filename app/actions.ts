@@ -8,7 +8,11 @@ export async function auth(name: string) {
   const cookieStore = await cookies();
   const token = cookieStore.get(name);
   if (token === undefined || token === null) {
-    return NextResponse.json({ error: "token not found" }, { status: 500 });
+    return JSON.stringify({
+      error: "token not found",
+      user: null,
+      isYear: false,
+    });
   }
   const res = await fetch(`${process.env.BACKEND_URL}/auth`, {
     method: "GET",
@@ -17,18 +21,16 @@ export async function auth(name: string) {
   if (!res.ok || res.status === 500) {
     const error = await res.text();
     console.log(error);
-    return NextResponse.json({ error: error }, { status: 500 });
+    return JSON.stringify({ error: error, user: null, isYear: false });
   }
 
   const user = await res.json();
   const isYear = cookieStore.get("year");
-  return NextResponse.json(
-    {
-      user: user,
-      isYear: isYear === undefined ? false : true,
-    },
-    { status: 200 },
-  );
+  return JSON.stringify({
+    user: user,
+    isYear: isYear === undefined ? false : true,
+    error: null,
+  });
 }
 
 export async function setYear(year: string) {
@@ -41,5 +43,30 @@ export async function setYear(year: string) {
   });
   const host = (await headers()).get("host");
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-  return redirect(`${protocol}://${host}/api/emails`);
+  return redirect(`${protocol}://${host}/`);
+}
+
+export async function getNewEmails(): Promise<string> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+  if (!token) {
+    return JSON.stringify({ error: "token not found", status: 500 });
+  }
+  const year = cookieStore.get("year");
+
+  // const emailRes = await fetch(`${process.env.BACKEND_URL}/emails`, {
+  //   method: "GET",
+  //   signal: AbortSignal.timeout(480000),
+  //   headers: {
+  //     Authorization: `Bearer ${token!.value}`,
+  //     year: year ? year.value : new Date().getFullYear().toString(),
+  //   },
+  // });
+
+  // if (!emailRes.ok || emailRes.status === 500) {
+  //   const error = await emailRes.text();
+  //   return JSON.stringify({ error: "error occured" + error, status: 500 });
+  // }
+  console.log("heelo email action");
+  return JSON.stringify({ status: 200, error: "null" });
 }
