@@ -54,19 +54,19 @@ export async function getNewEmails(): Promise<string> {
   }
   const year = cookieStore.get("year");
 
-  // const emailRes = await fetch(`${process.env.BACKEND_URL}/emails`, {
-  //   method: "GET",
-  //   signal: AbortSignal.timeout(480000),
-  //   headers: {
-  //     Authorization: `Bearer ${token!.value}`,
-  //     year: year ? year.value : new Date().getFullYear().toString(),
-  //   },
-  // });
+  const emailRes = await fetch(`${process.env.BACKEND_URL}/emails`, {
+    method: "GET",
+    signal: AbortSignal.timeout(480000),
+    headers: {
+      Authorization: `Bearer ${token!.value}`,
+      year: year ? year.value : new Date().getFullYear().toString(),
+    },
+  });
 
-  // if (!emailRes.ok || emailRes.status === 500) {
-  //   const error = await emailRes.text();
-  //   return JSON.stringify({ error: "error occured" + error, status: 500 });
-  // }
-  console.log("heelo email action");
+  if (!emailRes.ok || emailRes.status === 500) {
+    const error = await emailRes.text();
+    console.log(error);
+    return JSON.stringify({ error: "error occured" + error, status: 500 });
+  }
   return JSON.stringify({ status: 200, error: "null" });
 }
