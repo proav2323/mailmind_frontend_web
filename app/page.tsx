@@ -19,7 +19,7 @@ export default async function HomePage() {
     if (data.status === 200 && data.error === "null") {
       return redirect(`${protocol}://${host}/dashboard`);
     } else {
-      return NextResponse.json({ error: data.error, status: data.status });
+      return <div>something went wrong: {data.error}</div>;
     }
   }
 
