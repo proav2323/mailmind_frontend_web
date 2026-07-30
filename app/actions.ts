@@ -68,5 +68,5 @@ export async function getNewEmails(): Promise<string> {
     console.log(error);
     return JSON.stringify({ error: "error occured" + error, status: 500 });
   }
-  return JSON.stringify({ status: 200, error: "null" });
+  return JSON.stringify({ status: 200, error: null });
 }

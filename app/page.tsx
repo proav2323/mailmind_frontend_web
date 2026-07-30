@@ -4,7 +4,6 @@ import { USERS } from "./models/user";
 import { headers } from "next/headers";
 import { auth, getNewEmails, setYear } from "./actions";
 import Selector from "./components/selectYear";
-import { NextResponse } from "next/server";
 
 export default async function HomePage() {
   const res = await getUser();
@@ -14,13 +13,7 @@ export default async function HomePage() {
     return redirect(`${protocol}://${host}/login`);
   }
   if (res.value !== null && res.isYear === true) {
-    const stringData = await getNewEmails();
-    const data = JSON.parse(stringData);
-    if (data.status === 200 && data.error === "null") {
-      return redirect(`${protocol}://${host}/dashboard`);
-    } else {
-      return <div>something went wrong: {data.error}</div>;
-    }
+    return redirect(`${protocol}://${host}/dashboard`);
   }
 
   return (
