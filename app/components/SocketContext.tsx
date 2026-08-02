@@ -37,6 +37,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
       const socketInstance = io(SOCKET_SERVER_URL, {
         autoConnect: true,
+        transports: ["websocket"],
         reconnectionAttempts: 5,
         // 🚀 THIS SENDS THE TOKEN TO client.handshake.auth.token ON THE SERVER
         auth: {
