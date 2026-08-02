@@ -11,7 +11,7 @@ export async function auth(name: string) {
       error: "token not found",
       user: null,
       isYear: false,
-      token: token,
+      token: null,
     });
   }
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth`, {
@@ -30,6 +30,7 @@ export async function auth(name: string) {
     user: user,
     isYear: isYear === undefined ? false : true,
     error: null,
+    token: token.value,
   });
 }
 
