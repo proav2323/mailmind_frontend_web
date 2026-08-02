@@ -34,7 +34,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     (token: string) => {
       // Prevent duplicate connections if already connected
       if (socket?.connected) return;
-      console.log(token);
 
       const socketInstance = io(SOCKET_SERVER_URL, {
         autoConnect: true,
