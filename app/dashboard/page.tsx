@@ -24,6 +24,7 @@ export default async function HomePage() {
             ? JSON.parse(JSON.stringify({ error: "no-value" }))
             : JSON.parse(JSON.stringify(res.value))
         }
+        token={res.token}
       />
       <HOME />
     </div>

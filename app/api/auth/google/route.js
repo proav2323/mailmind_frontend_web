@@ -8,30 +8,33 @@ export async function GET(request) {
     return NextResponse.json({ error: "No code provided" }, { status: 400 });
   }
 
-  let backendRes = await fetch(`${process.env.BACKEND_URL}/auth/login`, {
-    method: "POST",
-    body: new URLSearchParams({
-      name: "web",
-      email: "web",
-      photoUrl: "web",
-      oAuthProvider: "google",
-      scopes: [
-        "https://www.googleapis.com/auth/gmail.readonly",
-        "https://www.googleapis.com/auth/gmail.modify",
-        "https://mail.google.com/",
-        "https://www.googleapis.com/auth/contacts.readonly",
-        "https://www.googleapis.com/auth/user.emails.read",
-        "https://www.googleapis.com/auth/userinfo.profile",
-        "https://www.googleapis.com/auth/userinfo.email",
-      ],
-      accessToken: "heelo world",
-      serverAuthCode: code,
-      redirectUrl:
-        process.env.NODE_ENV === "production"
-          ? `${process.env.NEXT_PUBLIC_URL}/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`
-          : `http://localhost:3000/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`,
-    }),
-  });
+  let backendRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
+    {
+      method: "POST",
+      body: new URLSearchParams({
+        name: "web",
+        email: "web",
+        photoUrl: "web",
+        oAuthProvider: "google",
+        scopes: [
+          "https://www.googleapis.com/auth/gmail.readonly",
+          "https://www.googleapis.com/auth/gmail.modify",
+          "https://mail.google.com/",
+          "https://www.googleapis.com/auth/contacts.readonly",
+          "https://www.googleapis.com/auth/user.emails.read",
+          "https://www.googleapis.com/auth/userinfo.profile",
+          "https://www.googleapis.com/auth/userinfo.email",
+        ],
+        accessToken: "heelo world",
+        serverAuthCode: code,
+        redirectUrl:
+          process.env.NODE_ENV === "production"
+            ? `${process.env.NEXT_PUBLIC_URL}/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`
+            : `http://localhost:3000/${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`,
+      }),
+    },
+  );
 
   if (!backendRes.ok || backendRes.status === 500) {
     const error = await backendRes.text();

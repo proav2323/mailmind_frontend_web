@@ -2,7 +2,6 @@
 
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { NextResponse } from "next/server";
 
 export async function auth(name: string) {
   const cookieStore = await cookies();
@@ -12,9 +11,10 @@ export async function auth(name: string) {
       error: "token not found",
       user: null,
       isYear: false,
+      token: token,
     });
   }
-  const res = await fetch(`${process.env.BACKEND_URL}/auth`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth`, {
     method: "GET",
     headers: { Authorization: `Bearer ${token.value}` },
   });
@@ -54,14 +54,17 @@ export async function getNewEmails(): Promise<string> {
   }
   const year = cookieStore.get("year");
 
-  const emailRes = await fetch(`${process.env.BACKEND_URL}/emails`, {
-    method: "GET",
-    signal: AbortSignal.timeout(480000),
-    headers: {
-      Authorization: `Bearer ${token!.value}`,
-      year: year ? year.value : new Date().getFullYear().toString(),
+  const emailRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/emails`,
+    {
+      method: "GET",
+      signal: AbortSignal.timeout(480000),
+      headers: {
+        Authorization: `Bearer ${token!.value}`,
+        year: year ? year.value : new Date().getFullYear().toString(),
+      },
     },
-  });
+  );
 
   if (!emailRes.ok || emailRes.status === 500) {
     const error = await emailRes.text();

@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { USERS } from "./models/user";
 import { headers } from "next/headers";
-import { auth, getNewEmails, setYear } from "./actions";
+import { auth, setYear } from "./actions";
 import Selector from "./components/selectYear";
 
 export default async function HomePage() {
@@ -28,6 +28,7 @@ export async function getUser(): Promise<{
   message: string | null;
   value: USERS | null;
   isYear: boolean;
+  token: string | null;
 }> {
   const res = await auth("token");
   const data = JSON.parse(res);
@@ -37,6 +38,7 @@ export async function getUser(): Promise<{
       value: null,
       message: data.error,
       isYear: false,
+      token: null,
     };
   }
 
@@ -46,5 +48,6 @@ export async function getUser(): Promise<{
     message: null,
     value: data.user,
     isYear: isYear,
+    token: data.token,
   };
 }
