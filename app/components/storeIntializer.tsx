@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { USERS } from "../models/user";
 import { useUser } from "../states/user";
+import { useGlobalSocket } from "./SocketContext";
 
 export default function StoreInitializer({
   user,
@@ -12,6 +13,7 @@ export default function StoreInitializer({
   token: string | null;
 }) {
   const { updateUser, updateToken } = useUser();
+  const { connectSocket } = useGlobalSocket();
 
   useEffect(() => {
     if ("error" in user) {
@@ -19,6 +21,8 @@ export default function StoreInitializer({
     } else {
       updateUser(user);
       updateToken(token);
+      connectSocket(token!);
+      console.log("socket connected");
     }
   }, []);
 

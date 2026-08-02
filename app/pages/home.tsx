@@ -11,13 +11,6 @@ export default function HOME() {
   const router = useRouter();
   const { connectSocket } = useGlobalSocket();
 
-  useEffect(() => {
-    if (user !== null && isLoading === false && token) {
-      connectSocket(token);
-      console.log("socket connected");
-    }
-  }, [isLoading, user, token, connectSocket]);
-
   return isLoading === true || user === null ? (
     <div className='flex flex-col flex-1 items-center justify-center  font-sans min-h-screen'>
       <Loader />
