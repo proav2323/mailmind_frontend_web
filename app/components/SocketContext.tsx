@@ -30,14 +30,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
-  const tabClose = () => {
-    console.log("socket disconnect started");
-    if (socket) {
-      console.log("socket is not undefined");
-      socket.disconnect();
-    }
-  };
-
   const connectSocket = useCallback(
     (token: string) => {
       // Prevent duplicate connections if already connected
@@ -69,13 +61,25 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [socket]);
 
-  window.addEventListener("beforeunload", tabClose);
+  const tabClose = () => {
+    console.log("socket disconnect started");
+    if (socket) {
+      console.log("socket is not undefined");
+      disconnectSocket();
+    }
+  };
 
   // Clean up on entire app unmount
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      console.log("hello");
+      window.addEventListener("beforeunload", tabClose);
+    }
     return () => {
       tabClose();
-      window.removeEventListener("beforeunload", tabClose);
+      if (typeof window !== undefined) {
+        window.removeEventListener("beforeunload", tabClose);
+      }
     };
   }, [socket]);
 
