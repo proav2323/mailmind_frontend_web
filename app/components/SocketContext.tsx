@@ -64,7 +64,11 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   // Clean up on entire app unmount
   useEffect(() => {
     return () => {
-      if (socket) socket.disconnect();
+      console.log("socket disconnect started");
+      if (socket) {
+        console.log("socket is not undefined");
+        socket.disconnect();
+      }
     };
   }, [socket]);
 
