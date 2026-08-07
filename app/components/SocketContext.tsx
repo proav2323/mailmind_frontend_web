@@ -78,7 +78,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       tabClose();
       if (typeof window !== undefined) {
-        window.removeEventListener("beforeunload", tabClose);
+        // window.removeEventListener("beforeunload", tabClose);
       }
     };
   }, [socket]);

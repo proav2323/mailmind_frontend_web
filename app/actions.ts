@@ -55,6 +55,11 @@ export async function getNewEmails(): Promise<string> {
   }
   const year = cookieStore.get("year");
 
+  const Res = await fetch(`${process.env.NEXT_PUBLIC_AI_URL}/`, {
+    method: "GET",
+    signal: AbortSignal.timeout(480000),
+  });
+
   const emailRes = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/emails`,
     {
