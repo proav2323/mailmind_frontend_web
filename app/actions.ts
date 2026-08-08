@@ -79,3 +79,30 @@ export async function getNewEmails(): Promise<string> {
   }
   return JSON.stringify({ status: 200, error: null });
 }
+
+export async function saveFids(fid: string) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+  if (!token) {
+    return JSON.stringify({ error: "token not found", status: 500 });
+  }
+  const emailRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/save`,
+    {
+      method: "GET",
+      signal: AbortSignal.timeout(480000),
+      headers: {
+        Authorization: `Bearer ${token!.value}`,
+        fid: fid,
+        platform: "web",
+      },
+    },
+  );
+
+  if (!emailRes.ok || emailRes.status === 500) {
+    const error = await emailRes.text();
+    console.log(error);
+    return JSON.stringify({ error: "error occured" + error, status: 500 });
+  }
+  return JSON.stringify({ status: 200, error: null });
+}

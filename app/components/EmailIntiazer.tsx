@@ -2,12 +2,31 @@
 
 import { useEffect } from "react";
 import { useUser } from "../states/user";
-import { auth, getNewEmails } from "../actions";
+import { auth, getNewEmails, saveFids } from "../actions";
+import { GetInstalationsId } from "../fireabse";
 
 export default function EmailInitializer() {
   const { updateUser, updateLoading } = useUser();
   useEffect(() => {
     updateLoading(true);
+    const data = GetInstalationsId();
+    if (data !== null) {
+      data
+        .then((value) => {
+          saveFids(value).then((val) => {
+            const data = JSON.parse(val);
+            if (data.error === null) {
+              console.log("fid saved");
+            } else {
+              console.log(data.error);
+            }
+          });
+        })
+        .catch((err) => {
+          console.log("error in getting fid: " + err);
+        });
+    }
+
     getNewEmails().then((value) => {
       const check = JSON.parse(value);
       if (check.error === null) {
