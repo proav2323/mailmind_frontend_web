@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getMessaging } from "firebase/messaging";
+import { getMessaging, Messaging } from "firebase/messaging";
 import { getInstallations, getId } from "firebase/installations";
 
 const firebaseConfig = {
@@ -13,20 +13,24 @@ const firebaseConfig = {
 
 // Prevent duplicate initialization during hot reloads
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+let ID: string | null = null;
+let msg: Messaging | null = null;
 
 export const GetMessaging = () => {
-  if (typeof window !== undefined) {
-    return getMessaging(app);
+  if (typeof window !== undefined && msg === null) {
+    msg = getMessaging(app);
+    return msg;
   }
-  return null;
+  return msg;
 };
 
-export const GetInstalationsId = () => {
-  if (typeof window !== undefined) {
+export const GetInstalationsId = async () => {
+  if (typeof window !== undefined && ID === null) {
     const installations = getInstallations(app);
-    return getId(installations);
+    ID = await getId(installations);
+    return ID;
   }
-  return null;
+  return ID;
 };
 
 export default app;
