@@ -7,7 +7,7 @@ onBackgroundMessage(messaging, (payload) => {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: "./app/favicon.png",
+    icon: "./app/icon.png",
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
