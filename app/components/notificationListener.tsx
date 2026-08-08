@@ -14,14 +14,15 @@ export default function NotificationListner() {
   const [payload, setPayload] = useState<MessagePayload | null>(null);
 
   const msg = GetMessaging();
+  msg.then((value) => {
+    onMessage(value ? value : gm(app), (payload) => {
+      setPayload(payload);
+      setShow(true);
 
-  onMessage(msg ? msg : gm(app), (payload) => {
-    setPayload(payload);
-    setShow(true);
-
-    setTimeout(() => {
-      setShow(false);
-    }, 7000);
+      setTimeout(() => {
+        setShow(false);
+      }, 7000);
+    });
   });
 
   useEffect(() => {}, []);

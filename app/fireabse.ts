@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getMessaging, Messaging } from "firebase/messaging";
+import { getMessaging, isSupported, Messaging } from "firebase/messaging";
 import { getInstallations, getId } from "firebase/installations";
 
 const firebaseConfig = {
@@ -16,8 +16,8 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 let ID: string | null = null;
 let msg: Messaging | null = null;
 
-export const GetMessaging = () => {
-  if (typeof window !== undefined && msg === null) {
+export const GetMessaging = async () => {
+  if (typeof window !== undefined && msg === null && (await isSupported())) {
     msg = getMessaging(app);
     return msg;
   }
