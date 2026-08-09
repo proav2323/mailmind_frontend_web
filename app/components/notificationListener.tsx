@@ -16,6 +16,7 @@ export default function NotificationListner() {
   const msg = GetMessaging();
   msg.then((value) => {
     onMessage(value ? value : gm(app), (payload) => {
+      console.log(payload);
       setPayload(payload);
       setShow(true);
 
