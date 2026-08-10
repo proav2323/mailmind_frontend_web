@@ -1,6 +1,13 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getMessaging, isSupported, Messaging } from "firebase/messaging";
+import {
+  getMessaging,
+  isSupported,
+  Messaging,
+  onRegistered,
+  register,
+} from "firebase/messaging";
 import { getInstallations, getId } from "firebase/installations";
+import { saveFids } from "./actions";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -18,20 +25,39 @@ let ID: string | null = null;
 let msg: Messaging | null = null;
 
 export const GetMessaging = async () => {
-  if (typeof window !== undefined && msg === null && (await isSupported())) {
+  if (
+    typeof window !== undefined &&
+    typeof process !== undefined &&
+    msg === null &&
+    (await isSupported())
+  ) {
+    requestPermission();
     msg = getMessaging(app);
+    onRegistered(msg, (token) => {
+      ID = token;
+      saveFids(token);
+    });
+    await register(msg, {
+      vapidKey: process.env.NEXT_PUBLIC_VAPID_KEY,
+    });
+
     return msg;
   }
   return msg;
 };
 
-export const GetInstalationsId = async () => {
-  if (typeof window !== undefined && ID === null) {
-    const installations = getInstallations(app);
-    ID = await getId(installations);
-    return ID;
-  }
+export const GetInstalationsId = () => {
   return ID;
 };
+
+function requestPermission() {
+  if (Notification.permission === "default") {
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        console.log("Notification permission granted.");
+      }
+    });
+  }
+}
 
 export default app;
