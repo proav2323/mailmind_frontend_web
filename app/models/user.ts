@@ -5,7 +5,6 @@ export interface USERS {
   college: string | undefined;
   year: number | undefined;
   branch: string | undefined;
-  refreshToken: string;
   oAuthProvider: string;
   id: string;
   created_at: Date;
