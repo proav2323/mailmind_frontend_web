@@ -7,5 +7,4 @@ export interface NOTIFICATONS {
   body: string;
   isSent: boolean;
   scheduledTime: Date;
-  USER: USERS;
 }

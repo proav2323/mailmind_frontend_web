@@ -1,6 +1,3 @@
-import { EMAILS } from "./emails";
-import { NOTIFICATONS } from "./notifications";
-
 export interface USERS {
   name: string;
   email: string;
@@ -13,6 +10,4 @@ export interface USERS {
   id: string;
   created_at: Date;
   updated_at: Date;
-  emails: EMAILS[];
-  notifications: NOTIFICATONS[];
 }

@@ -13,5 +13,4 @@ export interface EMAILS {
   category: string;
   deadline: Date;
   isRead: boolean;
-  USER: USERS;
 }
