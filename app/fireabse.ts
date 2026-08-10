@@ -34,8 +34,13 @@ export const GetMessaging = async () => {
     requestPermission();
     msg = getMessaging(app);
     onRegistered(msg, (token) => {
-      ID = token;
-      saveFids(token);
+      console.log(token);
+      const installations = getInstallations(app);
+      getId(installations).then((value) => {
+        console.log(value);
+        saveFids(value);
+        ID = value;
+      });
     });
     await register(msg, {
       vapidKey: process.env.NEXT_PUBLIC_VAPID_KEY,
