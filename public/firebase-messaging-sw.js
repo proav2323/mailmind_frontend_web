@@ -67,13 +67,13 @@ importScripts(
 
 // Initialize the Firebase app in the service worker
 firebase.initializeApp({
-  apiKey: "AIzaSyCwjIrvFokuxRJG9ebjTk7jBNFd1H6-ehA",
-  authDomain: "mailmind-4ca8e.firebaseapp.com",
-  projectId: "mailmind-4ca8e",
-  storageBucket: "mailmind-4ca8e.firebasestorage.app",
-  messagingSenderId: "1019970178825",
-  appId: "1:1019970178825:web:5e2b87017747fe805b0dd8",
-  measurementId: "G-0CF9502KQQ",
+  apiKey: "AIzaSyB8U7EL3F0-ihhxVsCGm6sUm0iWEWjZyTQ",
+  authDomain: "massive-vector-501914-a5.firebaseapp.com",
+  projectId: "massive-vector-501914-a5",
+  storageBucket: "massive-vector-501914-a5.firebasestorage.app",
+  messagingSenderId: "954214301039",
+  appId: "1:954214301039:web:49af42e5d81c15f5ecbc9a",
+  measurementId: "G-KX6679E6EX"
 });
 
 // Retrieve an instance of Firebase Cloud Messaging
