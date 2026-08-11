@@ -80,7 +80,7 @@ export async function getNewEmails(): Promise<string> {
   return JSON.stringify({ status: 200, error: null });
 }
 
-export async function saveFids(fid: string) {
+export async function saveFids(fid: string, tokenS: string) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token");
   if (!token) {
@@ -94,6 +94,7 @@ export async function saveFids(fid: string) {
       headers: {
         Authorization: `Bearer ${token!.value}`,
         fid: fid,
+        token: tokenS,
         platform: "web",
       },
     },

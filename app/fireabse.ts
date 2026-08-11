@@ -38,7 +38,7 @@ export const GetMessaging = async () => {
       const installations = getInstallations(app);
       getId(installations).then((value) => {
         console.log(value);
-        saveFids(value);
+        saveFids(value, token);
         ID = value;
       });
     });
