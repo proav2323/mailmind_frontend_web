@@ -10,8 +10,13 @@ import {
 import app, { GetMessaging } from "../fireabse";
 
 export default function NotificationListner() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const [payload, setPayload] = useState<MessagePayload | null>(null);
+
+  const close = () => {
+    console.log("closing");
+    setShow(false);
+  };
 
   const msg = GetMessaging();
   msg.then((value) => {
@@ -28,5 +33,11 @@ export default function NotificationListner() {
 
   useEffect(() => {}, []);
 
-  return show ? <NotificationWidget payload={payload} show={show} /> : null;
+  return show ? (
+    <NotificationWidget
+      payload={payload}
+      show={show}
+      setShow={() => setShow(false)}
+    />
+  ) : null;
 }

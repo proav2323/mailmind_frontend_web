@@ -5,6 +5,36 @@
   --foreground: #171717;
 }
 
+@keyframes slideRight {
+  from {
+    transform: translateX(-100%); /* Start completely off-screen to the left */
+    opacity: 0; /* Optional: Fade in while sliding */
+  }
+  to {
+    transform: translateX(0); /* End at its natural layout position */
+    opacity: 1;
+  }
+}
+
+@keyframes slideTop {
+  from {
+    transform: translateY(-100%); /* Start completely off-screen to the left */
+    opacity: 0; /* Optional: Fade in while sliding */
+  }
+  to {
+    transform: translateY(0); /* End at its natural layout position */
+    opacity: 1;
+  }
+}
+
+.slide {
+  animation: slideRight 1 0.5s ease-in-out;
+}
+
+.top {
+  animation: slideTop 1 0.5s ease-in-out;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

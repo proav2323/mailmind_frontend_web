@@ -4,6 +4,8 @@ import EmailInitializer from "../components/EmailIntiazer";
 import { useGlobalSocket } from "../components/SocketContext";
 import { useEffect, useState } from "react";
 import SyncToast from "../components/SyncingNewEmails";
+import Navbar from "../components/navbar";
+import Sidebar from "../components/sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,15 +37,16 @@ export default function RootLayout({
     }
   }, [SOCKET.isConnected, SOCKET.socket]);
   return (
-    <html
-      lang='en'
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className='min-h-full flex flex-col'>
-        {isLoading ? <SyncToast /> : null}
-        {children}
-        <EmailInitializer />
-      </body>
-    </html>
+    <div className='min-h-full flex flex-col'>
+      {isLoading ? <SyncToast /> : null}
+      <div className='flex flex-row justify-between w-full items-start h-full'>
+        <Sidebar />
+        <div className='w-full'>
+          <Navbar />
+          {children}
+        </div>
+      </div>
+      <EmailInitializer />
+    </div>
   );
 }
