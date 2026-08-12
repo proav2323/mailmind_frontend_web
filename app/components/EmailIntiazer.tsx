@@ -4,9 +4,11 @@ import { useEffect } from "react";
 import { useUser } from "../states/user";
 import { auth, getNewEmails } from "../actions";
 import { GetMessaging } from "../fireabse";
+import { useSidebar } from "../states/sidebar";
 
 export default function EmailInitializer() {
   const { updateUser, updateLoading } = useUser();
+  const { updateOpen } = useSidebar();
   useEffect(() => {
     updateLoading(true);
     GetMessaging().then((value) => {});
