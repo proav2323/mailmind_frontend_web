@@ -218,11 +218,15 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: Arial, Helvetica, sans-serif;
+  transition: all ease-in-out 0.5s;
 }
 
 .glass {
   backdrop-filter: blur(18px);
   background: rgba(255, 255, 255, 0.75);
+}
+.close {
+  width: 5vw;
 }
 
 .gradient {
