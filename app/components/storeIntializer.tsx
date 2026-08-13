@@ -5,6 +5,7 @@ import { USERS } from "../models/user";
 import { useUser } from "../states/user";
 import { useGlobalSocket } from "./SocketContext";
 import { useSidebar } from "../states/sidebar";
+import { useTheme } from "../states/theme";
 
 export default function StoreInitializer({
   user,
@@ -16,6 +17,7 @@ export default function StoreInitializer({
   const { updateUser, updateToken } = useUser();
   const { connectSocket } = useGlobalSocket();
   const { updateOpen } = useSidebar();
+  const { updateTheme } = useTheme();
 
   useEffect(() => {
     if (typeof localStorage !== undefined) {
@@ -23,6 +25,11 @@ export default function StoreInitializer({
         localStorage.getItem("open")
           ? JSON.parse(localStorage.getItem("open")!)
           : true,
+      );
+      updateTheme(
+        localStorage.getItem("theme")
+          ? (localStorage.getItem("theme")! as "dark" | "light")
+          : "dark",
       );
     }
     if ("error" in user) {
