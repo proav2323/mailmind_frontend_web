@@ -6,6 +6,8 @@ import { useUser } from "../states/user";
 import { useGlobalSocket } from "./SocketContext";
 import { useSidebar } from "../states/sidebar";
 import { useTheme } from "../states/theme";
+import { useNotifications } from "../states/notifications";
+import { getUserNotifications } from "../actions";
 
 export default function StoreInitializer({
   user,
@@ -18,6 +20,21 @@ export default function StoreInitializer({
   const { connectSocket } = useGlobalSocket();
   const { updateOpen } = useSidebar();
   const { updateTheme } = useTheme();
+  const { updateLoading, updateNotifications, notifications, isLoading } =
+    useNotifications();
+
+  function getNotifications() {
+    updateLoading(true);
+    getUserNotifications().then((value) => {
+      if (value.error === null) {
+        updateLoading(false);
+        updateNotifications(value.data!);
+      } else {
+        updateLoading(false);
+        updateNotifications([]);
+      }
+    });
+  }
 
   useEffect(() => {
     if (typeof localStorage !== undefined) {
@@ -38,6 +55,7 @@ export default function StoreInitializer({
       updateUser(user);
       updateToken(token);
       connectSocket(token!);
+      getNotifications();
       console.log("socket connected");
     }
   }, []);

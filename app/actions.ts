@@ -107,3 +107,57 @@ export async function saveFids(fid: string, tokenS: string) {
   }
   return JSON.stringify({ status: 200, error: null });
 }
+
+export async function getUserNotifications() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+  if (!token) {
+    return { error: "token not found", status: 500 };
+  }
+
+  const emailRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/user`,
+    {
+      method: "GET",
+      signal: AbortSignal.timeout(480000),
+      headers: {
+        Authorization: `Bearer ${token!.value}`,
+      },
+    },
+  );
+
+  if (!emailRes.ok || emailRes.status === 500) {
+    const error = await emailRes.text();
+    console.log(error);
+    return { error: "error occured" + error, status: 500 };
+  }
+  const data = await emailRes.json();
+  return { status: 200, error: null, data: data };
+}
+
+export async function seenNotifications() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+  if (!token) {
+    return { error: "token not found", status: 500 };
+  }
+
+  const emailRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/seen`,
+    {
+      method: "PUT",
+      signal: AbortSignal.timeout(480000),
+      headers: {
+        Authorization: `Bearer ${token!.value}`,
+      },
+    },
+  );
+
+  if (!emailRes.ok || emailRes.status === 500) {
+    const error = await emailRes.text();
+    console.log(error);
+    return { error: "error occured" + error, status: 500 };
+  }
+  const data = await emailRes.json();
+  return { status: 200, error: null, data: data };
+}

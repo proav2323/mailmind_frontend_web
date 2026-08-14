@@ -7,13 +7,18 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import DropdownWidget from "./Dropdown";
 import { useTheme } from "../states/theme";
+import NotificationShower from "./notificationui";
+import { useNotifications } from "../states/notifications";
 
 export default function Navbar() {
   const { user, isLoading, token } = useUser();
   const { open, updateOpen } = useSidebar();
+  const notification = useNotifications();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
   const dropdownParentDiv = useRef<HTMLDivElement | null>(null);
   const { theme, updateTheme } = useTheme();
+  const notParentDiv = useRef<HTMLDivElement>(null);
 
   function toggleTheme() {
     updateTheme(theme === "dark" ? "light" : "dark");
@@ -35,7 +40,10 @@ export default function Navbar() {
 
   function closeDroddown() {
     setDropdownOpen(dropdownOpen === true ? false : true);
-    console.log(dropdownOpen);
+  }
+
+  function openNotifications() {
+    setNotificationOpen(notificationOpen === true ? false : true);
   }
 
   const toggleSidebar = () => {
@@ -55,15 +63,37 @@ export default function Navbar() {
         </div>
       </div>
       <div className='flex flex-row items-center justify-center gap-2 bg-transparent pl-2 pr-2 rounded-md w-fit'>
-        <div className='relative cursor-pointer w-fit'>
-          <Bell className='text-lg' />
-          <div className='absolute top-[-10] right-[-4] bg-red-800 text-white rounded-full w-5 h-5 flex items-center justify-center cursor-none'>
-            <span>2</span>
-          </div>
+        <div className='relative  w-fit' ref={notParentDiv}>
+          <Bell
+            className='text-lg cursor-pointer'
+            onClick={() => openNotifications()}
+          />
+          {notification.isLoading === false &&
+          notification.notifications.filter((value) => value.seen !== true)
+            .length > 0 ? (
+            <div className='absolute top-[-15] right-[-4] bg-red-800 text-white rounded-full w-6 h-6 flex items-center justify-center cursor-none'>
+              <span>
+                {notification.notifications.filter(
+                  (value) => value.seen !== true,
+                ).length > 9
+                  ? "9+"
+                  : notification.notifications.filter(
+                      (value) => value.seen !== true,
+                    ).length}
+              </span>
+            </div>
+          ) : null}
+          {notificationOpen ? (
+            <NotificationShower
+              open={notificationOpen}
+              closeNot={openNotifications}
+              parentDiv={notParentDiv}
+            />
+          ) : null}
         </div>
         <div className='relative' ref={dropdownParentDiv}>
           <div
-            className='w-fit h-fit cursor-pointer'
+            className='w-fit h-fit cursor-pointer relative'
             onClick={() => closeDroddown()}
           >
             <Image
