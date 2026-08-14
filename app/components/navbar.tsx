@@ -3,9 +3,7 @@
 import { Bell, LogOut, Menu, Moon, Search, Settings, Sun } from "lucide-react";
 import { useUser } from "../states/user";
 import { useSidebar } from "../states/sidebar";
-import Image from "next/image";
 import { useRef, useState } from "react";
-import DropdownWidget from "./Dropdown";
 import { useTheme } from "../states/theme";
 import NotificationShower from "./notificationui";
 import { useNotifications } from "../states/notifications";
@@ -14,33 +12,9 @@ export default function Navbar() {
   const { user, isLoading, token } = useUser();
   const { open, updateOpen } = useSidebar();
   const notification = useNotifications();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
-  const dropdownParentDiv = useRef<HTMLDivElement | null>(null);
   const { theme, updateTheme } = useTheme();
   const notParentDiv = useRef<HTMLDivElement>(null);
-
-  function toggleTheme() {
-    updateTheme(theme === "dark" ? "light" : "dark");
-  }
-
-  const items = [
-    {
-      name: theme === "dark" ? "light" : "dark",
-      icon: theme === "dark" ? Sun : Moon,
-      id: "main",
-      click: () => {
-        toggleTheme();
-      },
-    },
-    { name: "Settings", icon: Settings, id: "user", click: () => {} },
-    { name: "Logout", icon: LogOut, id: "user", click: () => {} },
-  ];
-  const ids = [{ id: "main" }, { id: "user" }];
-
-  function closeDroddown() {
-    setDropdownOpen(dropdownOpen === true ? false : true);
-  }
 
   function openNotifications() {
     setNotificationOpen(notificationOpen === true ? false : true);
@@ -88,30 +62,6 @@ export default function Navbar() {
               open={notificationOpen}
               closeNot={openNotifications}
               parentDiv={notParentDiv}
-            />
-          ) : null}
-        </div>
-        <div className='relative' ref={dropdownParentDiv}>
-          <div
-            className='w-fit h-fit cursor-pointer relative'
-            onClick={() => closeDroddown()}
-          >
-            <Image
-              src={user.photoUrl}
-              width={50}
-              height={50}
-              alt='profile photo'
-              className='rounded-full'
-            />
-          </div>
-
-          {dropdownOpen ? (
-            <DropdownWidget
-              open={dropdownOpen}
-              item={items}
-              ids={ids}
-              closeDropdown={closeDroddown}
-              parentDiv={dropdownParentDiv}
             />
           ) : null}
         </div>

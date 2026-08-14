@@ -241,3 +241,7 @@ body {
   background: var(--bg-secondary);
   cursor: pointer;
 }
+
+.active {
+  background: var(--gradient-card);
+}
