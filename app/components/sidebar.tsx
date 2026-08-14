@@ -14,6 +14,7 @@ import {
   Phone,
   Settings,
   Sun,
+  User,
 } from "lucide-react";
 import DropdownWidget from "./Dropdown";
 import { useRef, useState } from "react";
@@ -36,6 +37,7 @@ export default function Sidebar() {
       },
     },
     { name: "Settings", icon: Settings, id: "user", click: () => {} },
+    { name: "profile", icon: User, id: "user", click: () => {} },
     { name: "Logout", icon: LogOut, id: "user", click: () => {} },
   ];
   const ids = [{ id: "main" }, { id: "user" }];
