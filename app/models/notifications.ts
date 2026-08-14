@@ -6,5 +6,5 @@ export interface NOTIFICATONS {
   isSent: boolean;
   seen: boolean;
   scheduledTime: Date;
-  data: { id: string } | undefined;
+  data: { gmailId: string } | undefined;
 }

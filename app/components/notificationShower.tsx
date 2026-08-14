@@ -14,7 +14,7 @@ export default function NotificationUi({
   function clickNot(not: NOTIFICATONS) {
     closeNot();
     if (not.data) {
-      router.push(`/email/${not.data.id}`);
+      router.push(`/dashboard/email/${not.data.gmailId}`);
     } else {
     }
   }

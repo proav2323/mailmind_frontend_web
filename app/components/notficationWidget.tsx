@@ -1,4 +1,7 @@
+"use client";
+
 import { MessagePayload } from "firebase/messaging";
+import { useRouter } from "next/navigation";
 
 export default function NotificationWidget({
   payload,
@@ -9,12 +12,17 @@ export default function NotificationWidget({
   show: boolean;
   setShow: () => void;
 }) {
-  const redirect = () => {};
+  const router = useRouter();
+  const redirectUser = () => {
+    if (payload && payload.data) {
+      router.push(`dashboard/email/${payload.data.gmailId}`);
+    }
+  };
   return show && payload ? (
-    <div className='z-50 absolute bottom-2 right-2 p-4 gap-2 flex flex-row w-fit h-fit bg-[var(--bg-secondary)] rounded-md shadow-md         slide justify-between items-center'>
+    <div className='z-50 absolute bottom-2 right-2 p-4 gap-2 flex flex-row w-fit h-fit bg-[var(--bg-secondary)] rounded-md shadow-md         slide justify-between items-center cursor-pointer'>
       <div
         className='flex flex-col w-full gap-2 p-2 cursor-pointer'
-        onClick={redirect}
+        onClick={redirectUser}
       >
         <span className='text-lg font-bold text-[var(--text-primary)]'>
           {payload.notification
