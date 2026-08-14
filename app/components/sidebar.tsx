@@ -17,15 +17,16 @@ import {
   User,
 } from "lucide-react";
 import DropdownWidget from "./Dropdown";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTheme } from "../states/theme";
 
 export default function Sidebar() {
   const { user, isLoading, token } = useUser();
   const { theme, updateTheme } = useTheme();
-  const { open } = useSidebar();
+  const { open, updateOpen } = useSidebar();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownParentDiv = useRef<HTMLDivElement | null>(null);
+  const sidebarDiv = useRef<HTMLDivElement>(null);
 
   const items = [
     {
@@ -49,9 +50,31 @@ export default function Sidebar() {
   function closeDroddown() {
     setDropdownOpen(dropdownOpen === true ? false : true);
   }
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      // Close menu if click is outside the wrapper div
+      if (
+        sidebarDiv.current && // html div not null
+        !sidebarDiv.current.contains(event.target as Node) && // dectcts if click is inside
+        window.window.innerWidth < 1024
+      ) {
+        updateOpen(false);
+      }
+    }
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside); // mouse lcick event listerner
+
+    // Clean up the event listener on unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return user ? (
     <div
-      className={`${open ? "w-[18vw]" : "w-[5vw]"}  sticky top-0 left-0 h-screen bg-[var(--bg-sidebar)] transition-all ease-in-out duration-300 flex flex-col items-center`}
+      ref={sidebarDiv}
+      className={`${open ? "xl:w-[18vw] lg:w-[28vw] w-[80%] flex lg:flex" : "lg:w-[8vw] xl:w-[5vw] hidden lg:flex"}  lg:flex lg:sticky fixed slide z-[100] top-0 left-0 h-screen bg-[var(--bg-sidebar)] transition-all ease-in-out duration-300 flex-col items-center`}
     >
       <div className='h-15 p-2 bg-[var(--bg-secondary)] shadow-md border-[var(--border-light)] flex flex-row justify-center items-center cursor-pointer w-full'>
         <Image src={logo} alt='logo' width={50} />

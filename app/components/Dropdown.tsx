@@ -59,11 +59,10 @@ export default function DropdownWidget({
   return open ? (
     <div
       ref={dropdownRef}
-      className={`absolute bottom-[50] left-[10] bg-[var(--bg-secondary)] pt-4 pb-4 pl-2 pr-2 gap-2 rounded-md transition-all ease-in-out slide w-[10vw]`}
+      className={`absolute bottom-[50] left-[10] bg-[var(--bg-secondary)] pt-4 pb-4 pl-2 pr-2 gap-2 rounded-md transition-all ease-in-out slide lg:w-[10vw] w-[30vw]`}
     >
       {ids.map((id, idIdx) => {
         const items = item.filter((value) => value.id === id.id);
-        console.log(items);
 
         return items.map((value, idx) => {
           return (
