@@ -2,13 +2,16 @@
 
 import { useEffect } from "react";
 import { useUser } from "../states/user";
-import { getNewEmails } from "../actions";
+import { getNewEmails, getUserEmails } from "../actions";
 import { GetMessaging } from "../fireabse";
+import { useEmails } from "../states/emails";
 
 export default function EmailInitializer() {
   const { updateLoading } = useUser();
+  const emails = useEmails();
   useEffect(() => {
     updateLoading(true);
+    emails.updateLoading(true);
     GetMessaging().then((value) => {});
 
     getNewEmails().then((value) => {
@@ -18,6 +21,13 @@ export default function EmailInitializer() {
       } else {
         updateLoading(false);
       }
+    });
+
+    getUserEmails().then((value) => {
+      if (value.error === null) {
+        emails.updateEmails(value.data ?? []);
+      }
+      emails.updateLoading(false);
     });
   }, []);
 

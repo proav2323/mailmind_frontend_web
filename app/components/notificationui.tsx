@@ -23,13 +23,10 @@ export default function NotificationShower({
     if (notifications.filter((value) => value.seen !== true).length >= 1) {
       seenNotifications().then((value) => {
         if (value.error === null) {
-          updateLoading(true);
           getUserNotifications().then((value) => {
             if (value.error === null) {
-              updateLoading(false);
               updateNotifications(value.data!);
             } else {
-              updateLoading(false);
               updateNotifications([]);
             }
           });

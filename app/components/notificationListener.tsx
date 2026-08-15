@@ -8,10 +8,13 @@ import {
   onMessage,
 } from "firebase/messaging";
 import app, { GetMessaging } from "../fireabse";
+import { getUserNotifications } from "../actions";
+import { useNotifications } from "../states/notifications";
 
 export default function NotificationListner() {
   const [show, setShow] = useState(true);
   const [payload, setPayload] = useState<MessagePayload | null>(null);
+  const { updateNotifications } = useNotifications();
 
   const close = () => {
     console.log("closing");
@@ -24,6 +27,14 @@ export default function NotificationListner() {
       console.log(payload);
       setPayload(payload);
       setShow(true);
+
+      getUserNotifications().then((value) => {
+        if (value.error === null) {
+          updateNotifications(value.data!);
+        } else {
+          updateNotifications([]);
+        }
+      });
 
       setTimeout(() => {
         setShow(false);

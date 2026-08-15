@@ -2,10 +2,12 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Toast from "./components/toast";
-import { SocketProvider } from "./components/SocketContext";
+import { SocketProvider, useGlobalSocket } from "./components/SocketContext";
 import NotificationListner from "./components/notificationListener";
 import { useTheme } from "./states/theme";
 import { ThemeIntailzioer } from "./components/ThemeIntializer";
+import { useEffect, useState } from "react";
+import SyncToast from "./components/SyncingNewEmails";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +25,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const { theme } = useTheme();
+  const SOCKET = useGlobalSocket();
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (SOCKET.isConnected && SOCKET.socket) {
+      SOCKET.socket.on("emailLoading", () => {
+        setIsLoading(true);
+      });
+
+      SOCKET.socket.on("newEmail", () => {
+        setIsLoading(false);
+      });
+    }
+  }, [SOCKET.isConnected, SOCKET.socket]);
   return (
     <html
       lang='en'
@@ -31,6 +47,7 @@ export default function RootLayout({
       <body className='min-h-full flex flex-col'>
         <SocketProvider>
           {children}
+          {isLoading ? <SyncToast /> : null}
           <Toast />
           <NotificationListner />
           <ThemeIntailzioer />

@@ -7,7 +7,8 @@ import { useGlobalSocket } from "./SocketContext";
 import { useSidebar } from "../states/sidebar";
 import { useTheme } from "../states/theme";
 import { useNotifications } from "../states/notifications";
-import { getUserNotifications } from "../actions";
+import { getUserCategories, getUserNotifications } from "../actions";
+import { useCategories } from "../states/categories";
 
 export default function StoreInitializer({
   user,
@@ -22,6 +23,7 @@ export default function StoreInitializer({
   const { updateTheme } = useTheme();
   const { updateLoading, updateNotifications, notifications, isLoading } =
     useNotifications();
+  const categories = useCategories();
 
   function getNotifications() {
     updateLoading(true);
@@ -56,6 +58,13 @@ export default function StoreInitializer({
       updateToken(token);
       connectSocket(token!);
       getNotifications();
+      categories.updateLoading(true);
+      getUserCategories().then((value) => {
+        if (value.error === null) {
+          categories.updateCategories(value.data ?? []);
+        }
+        categories.updateLoading(false);
+      });
       console.log("socket connected");
     }
   }, []);

@@ -74,7 +74,7 @@ export default function Sidebar() {
   return user ? (
     <div
       ref={sidebarDiv}
-      className={`${open ? "xl:w-[18vw] lg:w-[28vw] w-[80%] flex lg:flex" : "lg:w-[8vw] xl:w-[5vw] hidden lg:flex"}  lg:flex lg:sticky fixed slide z-[100] top-0 left-0 h-screen bg-[var(--bg-sidebar)] transition-all ease-in-out duration-300 flex-col items-center`}
+      className={`${open ? "xl:w-[18vw] lg:w-[28vw] w-[80%] flex lg:flex" : "lg:w-[8vw] xl:w-[5vw] hidden lg:flex"}  lg:flex lg:sticky fixed slide z-[100] top-0 left-0 h-screen bg-[var(--bg-sidebar)] transition-all ease-in-out duration-300 flex-col items-center shrink-0`}
     >
       <div className='h-15 p-2 bg-[var(--bg-secondary)] shadow-md border-[var(--border-light)] flex flex-row justify-center items-center cursor-pointer w-full'>
         <Image src={logo} alt='logo' width={50} />
