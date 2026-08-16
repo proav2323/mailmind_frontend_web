@@ -1,12 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import Filter from "../components/Filters";
 import Loader from "../components/loader";
 import { useCategories } from "../states/categories";
 import { useEmails } from "../states/emails";
 import { useUser } from "../states/user";
+import { getFillterEmails, getUserEmails } from "../actions";
+import EmailCard from "../components/EmailCard";
 
-export default function Inbox() {
+export default function Inbox({
+  query,
+}: {
+  query: { [key: string]: string | undefined };
+}) {
   const categroies = [
     { name: "assignment" },
     { name: "project" },
@@ -57,12 +64,52 @@ export default function Inbox() {
   ];
 
   const { user } = useUser();
-  const { emails, isLoading } = useEmails();
+  const { emails, isLoading, updateEmails, updateLoading } = useEmails();
   const category = useCategories();
+
+  const categorySearch = query.category;
+  const prioritySearch = query.priority;
+
+  useEffect(() => {
+    if (categorySearch || prioritySearch) {
+      console.log("working filter search");
+      updateLoading(true);
+      getFillterEmails(categorySearch, prioritySearch).then((value) => {
+        if (value.error === null) {
+          updateEmails(value.data!);
+        }
+        updateLoading(false);
+      });
+    } else {
+      updateLoading(true);
+      getUserEmails().then((value) => {
+        if (value.error === null) {
+          updateEmails(value.data ?? []);
+        }
+        updateLoading(false);
+      });
+    }
+  }, [categorySearch, prioritySearch]);
 
   return user !== null && isLoading !== true && category.isLoading !== true ? (
     <div className='flex flex-col mt-0 justify-start items-center w-full shrink-0'>
-      <Filter categories={categroies} pririoties={priorites} />
+      <Filter
+        categories={categroies}
+        pririoties={priorites}
+        catgeorySearch={categorySearch}
+        prioritySearch={prioritySearch}
+      />
+      {emails.length === 0 ? (
+        <span className='mt-2 font-bold text-lg text-center w-full'>
+          no emails found
+        </span>
+      ) : (
+        <div className='w-full mt-2 justify-center flex flex-col items-center z-1 gap-2'>
+          {emails.map((email) => {
+            return <EmailCard key={email.id} email={email} />;
+          })}
+        </div>
+      )}
     </div>
   ) : (
     <div className='w-full min-h-screen flex flex-row justify-center items-center'>

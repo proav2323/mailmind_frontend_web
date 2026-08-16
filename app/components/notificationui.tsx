@@ -58,7 +58,7 @@ export default function NotificationShower({
   return (
     <div
       ref={divRef}
-      className='w-[90vw] md:[50vw] lg:w-[30vw] h-[50vh] overflow-y-scroll bg-[var(--bg-secondary)] flex flex-col justify-start items-center absolute top-[55] right-[5] scrollbar-none rounded-md slide'
+      className='z-100 w-[90vw] md:[50vw] lg:w-[30vw] h-[50vh] overflow-y-scroll bg-[var(--bg-secondary)] flex flex-col justify-start items-center absolute top-[55] right-[5] scrollbar-none rounded-md slide'
     >
       {isLoading ? (
         <Loader />

@@ -18,13 +18,10 @@ export default function NotificationUi({
     } else {
     }
   }
-  return notifications
-    .sort(
-      (a, b) =>
-        new Date(b.scheduledTime).getTime() -
-        new Date(a.scheduledTime).getTime(),
-    )
-    .map((notification, idx) => {
+  return notifications.length === 0 ? (
+    <div className='w-full text-center font-bold text-lg'>no notifications</div>
+  ) : (
+    notifications.map((notification, idx) => {
       return (
         <div
           key={idx}
@@ -46,5 +43,6 @@ export default function NotificationUi({
           <div className='h-[1] w-full bg-[var(--border)]'></div>
         </div>
       );
-    });
+    })
+  );
 }

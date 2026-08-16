@@ -5,13 +5,15 @@ import { useUser } from "../states/user";
 import { getNewEmails, getUserEmails } from "../actions";
 import { GetMessaging } from "../fireabse";
 import { useEmails } from "../states/emails";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function EmailInitializer() {
   const { updateLoading } = useUser();
   const emails = useEmails();
+  const router = useRouter();
+  const pathname = usePathname();
   useEffect(() => {
     updateLoading(true);
-    emails.updateLoading(true);
     GetMessaging().then((value) => {});
 
     getNewEmails().then((value) => {
@@ -23,12 +25,16 @@ export default function EmailInitializer() {
       }
     });
 
-    getUserEmails().then((value) => {
-      if (value.error === null) {
-        emails.updateEmails(value.data ?? []);
-      }
-      emails.updateLoading(false);
-    });
+    if (!pathname.startsWith("/dashboard/inbox")) {
+      console.log("email getting working", pathname);
+      emails.updateLoading(true);
+      getUserEmails().then((value) => {
+        if (value.error === null) {
+          emails.updateEmails(value.data ?? []);
+        }
+        emails.updateLoading(false);
+      });
+    }
   }, []);
 
   return null;

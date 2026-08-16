@@ -24,7 +24,7 @@ export default function Navbar() {
     updateOpen(!open);
   };
   return user ? (
-    <div className='w-full sticky top-0 p-2 h-25 md:h-15 bg-[var(--bg-secondary)] shadow-md border-[var(--border-light)] flex flex-col md:flex-row justify-between items-center'>
+    <div className='w-full sticky top-0 p-2 h-25 md:h-15 bg-[var(--bg-secondary)] shadow-md border-[var(--border-light)] flex flex-col md:flex-row justify-between items-center z-10'>
       <div className='w-full shadow-md border-none md:border-[var(--border-light)] h-15 flex flex-row justify-between items-center'>
         <Menu className='cursor-pointer' onClick={toggleSidebar} />
         <div className='w-full flex-row justify-center items-center md:flex hidden'>
