@@ -230,7 +230,6 @@ export async function getFillterEmails(category?: string, priority?: string) {
   if (priority) {
     url = url + `&priority=${priority}`;
   }
-  console.log(url);
 
   const emailRes = await fetch(url, {
     method: "GET",
@@ -239,6 +238,73 @@ export async function getFillterEmails(category?: string, priority?: string) {
       Authorization: `Bearer ${token!.value}`,
     },
   });
+
+  if (!emailRes.ok || emailRes.status === 500) {
+    const error = await emailRes.text();
+    console.log(error);
+    return { error: "error occured" + error, status: 500 };
+  }
+  const data = await emailRes.json();
+  return { status: 200, error: null, data: data };
+}
+
+export async function addCatgeory(nameCat: string) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+  if (!token) {
+    console.log("no token");
+    return { error: "token not found", status: 500 };
+  }
+
+  if (!nameCat) {
+    return { error: "no name", data: undefined, status: 404 };
+  }
+
+  const emailRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/categories/add`,
+    {
+      method: "POST",
+      body: JSON.stringify({ name: nameCat }),
+      signal: AbortSignal.timeout(480000),
+      headers: {
+        Authorization: `Bearer ${token!.value}`,
+        "Content-Type": "application/json", // Critical for NestJS to parse the body
+        Accept: "application/json",
+      },
+    },
+  );
+
+  if (!emailRes.ok || emailRes.status === 500) {
+    const error = await emailRes.text();
+    console.log(error);
+    return { error: "error occured" + error, status: 500 };
+  }
+  const data = await emailRes.json();
+  return { status: 200, error: null, data: data };
+}
+
+export async function deleteCatgeory(id: string) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+  if (!token) {
+    console.log("no token");
+    return { error: "token not found", status: 500 };
+  }
+
+  if (!id) {
+    return { error: "no id", data: undefined, status: 404 };
+  }
+
+  const emailRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/categories/delete/${id}`,
+    {
+      method: "DELETE",
+      signal: AbortSignal.timeout(480000),
+      headers: {
+        Authorization: `Bearer ${token!.value}`,
+      },
+    },
+  );
 
   if (!emailRes.ok || emailRes.status === 500) {
     const error = await emailRes.text();

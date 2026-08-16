@@ -6,7 +6,7 @@ export default function Toast() {
   const { snackbar, hideSnackBar } = useSnackBar();
   return (
     <div
-      className={`p-4 rounded-md bg-[var(--bg-secondary)] absolute top-2 right-2 flex-row justify-between items-center animate-bounce transition ease-in-out ${snackbar.show ? "opacity-100 flex" : "opacity-0 hidden"}`}
+      className={`p-4 rounded-md bg-[var(--bg-secondary)] absolute top-2 right-2 flex-row justify-between items-center top transition ease-in-out z-100 ${snackbar.show ? "opacity-100 flex" : "opacity-0 hidden"}`}
     >
       <span
         className={`w-full ${snackbar.type === "error" ? "text-red-800" : snackbar.type === "success" ? "text-green-800" : "text-amber-800"} font-bold`}
