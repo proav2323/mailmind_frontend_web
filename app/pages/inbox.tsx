@@ -61,6 +61,7 @@ export default function Inbox({
     { name: "High", id: "High" },
     { name: "Medium", id: "Medium" },
     { name: "Low", id: "Low" },
+    { name: "Expired", id: "Expired" },
   ];
 
   const { user } = useUser();
