@@ -156,7 +156,7 @@ export default function Email({ email }: { email: EMAIL | null }) {
                 <div
                   key={idx}
                   dangerouslySetInnerHTML={{ __html: cleanHtml }}
-                  className='w-[95%] overflow-x-scroll scollbar-none'
+                  className='w-[95%] overflow-x-scroll scrollbar-none'
                 />
               );
             })}
