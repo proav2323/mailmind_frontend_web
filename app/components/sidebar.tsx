@@ -143,6 +143,10 @@ export default function Sidebar() {
               ids={ids}
               closeDropdown={closeDroddown}
               parentDiv={dropdownParentDiv}
+              bottom={2000}
+              left={40}
+              right={1000}
+              top={0}
             />
           ) : null}
         </div>

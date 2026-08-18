@@ -18,6 +18,10 @@ export default function DropdownWidget({
   closeDropdown,
   ids,
   parentDiv,
+  top,
+  left,
+  bottom,
+  right,
 }: {
   open: boolean;
   item: {
@@ -31,6 +35,10 @@ export default function DropdownWidget({
   ids: { id: string }[];
   closeDropdown: () => void;
   parentDiv: React.RefObject<HTMLDivElement | null>;
+  top: number;
+  bottom: number;
+  right: number;
+  left: number;
 }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 

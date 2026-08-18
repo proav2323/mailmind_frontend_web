@@ -314,3 +314,35 @@ export async function deleteCatgeory(id: string) {
   const data = await emailRes.json();
   return { status: 200, error: null, data: data };
 }
+
+export async function getEmailFromId(id: string) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+  if (!token) {
+    console.log("no token");
+    return { error: "token not found", status: 500 };
+  }
+
+  if (!id) {
+    return { error: "no id", data: undefined, status: 404 };
+  }
+
+  const emailRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/emails/email/${id}`,
+    {
+      method: "GET",
+      signal: AbortSignal.timeout(480000),
+      headers: {
+        Authorization: `Bearer ${token!.value}`,
+      },
+    },
+  );
+
+  if (!emailRes.ok || emailRes.status === 500) {
+    const error = await emailRes.text();
+    console.log(error);
+    return { error: "error occured" + error, status: 500 };
+  }
+  const data = await emailRes.json();
+  return { status: 200, error: null, data: data };
+}
