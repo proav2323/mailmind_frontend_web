@@ -90,7 +90,7 @@ export default function Email({ email }: { email: EMAIL | null }) {
         <div className='flex flex-row lg:border-b lg:border-[var(--border)] w-full items-start justify-start text-lg font-bold gap-2 p-2'>
           <AirVent /> Ai summary
         </div>
-        <div className='flex flex-col lg:fex-row justify-between items-start w-full'>
+        <div className='flex flex-col lg:flex-row justify-between items-start w-full'>
           <div className='w-full  flex flex-col justify-center items-center lg:border-r lg:border-[var(--border)]  gap-2'>
             <TextDisplay
               nameC='Category'
