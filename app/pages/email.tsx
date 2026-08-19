@@ -4,6 +4,7 @@ import {
   AirVent,
   Check,
   ChevronDown,
+  File,
   Forward,
   icons,
   Mail,
@@ -16,6 +17,7 @@ import TextDisplay from "../components/TextDisplay";
 import DOMPurify from "isomorphic-dompurify";
 import { useRef, useState } from "react";
 import DropdownWidget from "../components/Dropdown";
+import Attachment from "../components/Attachment";
 
 export default function Email({ email }: { email: EMAIL | null }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -51,7 +53,9 @@ export default function Email({ email }: { email: EMAIL | null }) {
               {email.sender.split("<")[0]}
             </span>
             <span className='text-sm text-[var(--text-secondary)]'>
-              {email.sender.split("<")[1].split(">")[0]}
+              {email.sender.split("<")[1]
+                ? email.sender.split("<")[1].split(">")[0]
+                : email.sender.split("<")[0]}
             </span>
           </div>
         </div>
@@ -86,7 +90,7 @@ export default function Email({ email }: { email: EMAIL | null }) {
           </div>
         </div>
       </div>
-      <div className='bg-[var(--bg-secondary)] rounded-md flex flex-col justify-start items-center w-full pt-2 pb-2 mt-2 gap-2'>
+      <div className='bg-[var(--bg-secondary)] rounded-md flex flex-col justify-start items-center w-full pt-2 pb-2 mt-2 gap-2 mb-2'>
         <div className='flex flex-row lg:border-b lg:border-[var(--border)] w-full items-start justify-start text-lg font-bold gap-2 p-2'>
           <AirVent /> Ai summary
         </div>
@@ -162,6 +166,24 @@ export default function Email({ email }: { email: EMAIL | null }) {
             })}
         </div>
       </div>
+      {email.attachments.length >= 1 ? (
+        <div className='bg-[var(--bg-secondary)] rounded-md flex flex-col justify-start items-center w-full pt-2 pb-2 mt-2 gap-2 mb-2'>
+          <div className='flex flex-row border-b border-[var(--border)] w-full items-start justify-start text-lg font-bold gap-2 p-2'>
+            <File /> Attachments
+          </div>
+          <div className='flex flex-col justify-start items-center w-[97%]'>
+            {email.attachments.map((attachment) => {
+              return (
+                <Attachment
+                  attachment={attachment}
+                  messageId={email.gmailId}
+                  key={attachment.attachmentId}
+                />
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
     </div>
   ) : (
     <div className='w-full h-full text-center font-bold text-md md:text-lg mt-2'>
