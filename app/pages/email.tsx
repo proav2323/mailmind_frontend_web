@@ -15,32 +15,71 @@ import {
 import { EMAIL } from "../dashboard/email/[id]/page";
 import TextDisplay from "../components/TextDisplay";
 import DOMPurify from "isomorphic-dompurify";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DropdownWidget from "../components/Dropdown";
 import Attachment from "../components/Attachment";
+import { complete, getEmailFromId, star } from "../actions";
+import { useEmails } from "../states/emails";
+import Loader from "../components/loader";
 
-export default function Email({ email }: { email: EMAIL | null }) {
+export default function Email({ emailD }: { emailD: EMAIL | null }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const parentDiv = useRef<HTMLDivElement>(null);
+  const { isLoading, email, updateEmail, updateLoading } = useEmails();
+
+  useEffect(() => {
+    if (emailD) {
+      updateEmail(emailD);
+    } else {
+      updateEmail(null);
+    }
+  }, []);
 
   function toggle() {
     setDropdownOpen(!dropdownOpen);
   }
 
+  const completeMail = async () => {
+    if (!email) {
+      return;
+    }
+    if (email.requiresAction && email.isCompleted === false) {
+      toggle();
+      await complete(email.id);
+      updateLoading(true);
+      await star(email.id);
+      const data = await getEmailFromId(email.id);
+      updateEmail(data.error === null ? data.data : null);
+      updateLoading(false);
+    }
+  };
+
+  const toggleStar = async () => {
+    if (!email) {
+      return;
+    }
+    updateLoading(true);
+    await star(email.id);
+    const data = await getEmailFromId(email.id);
+    updateEmail(data.error === null ? data.data : null);
+    updateLoading(false);
+  };
+
   const id = [{ id: "main" }];
   const items = [
-    { name: "Mark As Complete", id: "main", click: () => {}, icon: Check },
+    { name: "Mark As Complete", id: "main", click: completeMail, icon: Check },
   ];
-  return email ? (
+
+  return email && isLoading === false ? (
     <div className='w-[97%] h-full mt-2 flex flex-col justify-start items-center'>
       <div className='w-full flex flex-row justify-between items-center pt-2 pb-2'>
         <span className='font-bold text-md lg:text-lg'>
           {email.GmailSubject}
         </span>
         {email.isStared ? (
-          <Star fill='#111' className='cursor-pointer' />
+          <Star fill='#111' className='cursor-pointer' onClick={toggleStar} />
         ) : (
-          <Star className='cursor-pointer' />
+          <Star className='cursor-pointer' onClick={toggleStar} />
         )}
       </div>
       <div className='flex flex-row justify-between items-center w-full'>
@@ -184,6 +223,10 @@ export default function Email({ email }: { email: EMAIL | null }) {
           </div>
         </div>
       ) : null}
+    </div>
+  ) : isLoading ? (
+    <div className='w-full min-h-screen flex flex-row justify-center items-center'>
+      <Loader />
     </div>
   ) : (
     <div className='w-full h-full text-center font-bold text-md md:text-lg mt-2'>

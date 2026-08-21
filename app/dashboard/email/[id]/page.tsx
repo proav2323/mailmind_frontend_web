@@ -1,6 +1,6 @@
 "use server";
 import Email from "../../../pages/email";
-import { getEmailFromId } from "../../../actions";
+import { getEmailFromId, read } from "../../../actions";
 
 export interface EMAIL {
   id: string;
@@ -35,13 +35,15 @@ export default async function emailPage({
 }) {
   const { id } = await params;
   const emailData = await getEmailFromId(id);
+  const data =
+    emailData.error === null
+      ? await read(emailData.data.id, emailData.data.gmailId)
+      : null;
   const email: EMAIL | null = emailData.error === null ? emailData.data! : null;
-  // mark email as read
-  // also save latOpenedAt
 
   return (
     <div className='w-full h-full flex flex-col justify-center items-center'>
-      <Email email={email} />
+      <Email emailD={email} />
     </div>
   );
 }
