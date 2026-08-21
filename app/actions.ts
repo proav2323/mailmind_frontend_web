@@ -384,11 +384,11 @@ export async function read(id: string, gmailId: string) {
   const token = cookieStore.get("token");
   if (!token) {
     console.log("no token");
-    return { error: "token not found", status: 500 };
+    return JSON.stringify({ error: "token not found", status: 500 });
   }
 
   if (!id) {
-    return { error: "no id", data: undefined, status: 404 };
+    return JSON.stringify({ error: "no id", data: undefined, status: 404 });
   }
 
   const emailRes = await fetch(
@@ -405,10 +405,9 @@ export async function read(id: string, gmailId: string) {
   if (!emailRes.ok || emailRes.status === 500) {
     const error = await emailRes.text();
     console.log(error);
-    return { error: "error occured" + error, status: 500 };
+    return JSON.stringify({ error: "error occured" + error, status: 500 });
   }
-  const data = await emailRes.text();
-  return { status: 200, error: null, data: data };
+  return JSON.stringify({ status: 200, error: null, data: "" });
 }
 
 export async function star(id: string) {
@@ -416,11 +415,11 @@ export async function star(id: string) {
   const token = cookieStore.get("token");
   if (!token) {
     console.log("no token");
-    return { error: "token not found", status: 500 };
+    return JSON.stringify({ error: "token not found", status: 500 });
   }
 
   if (!id) {
-    return { error: "no id", data: undefined, status: 404 };
+    return JSON.stringify({ error: "no id", data: undefined, status: 404 });
   }
 
   const emailRes = await fetch(
@@ -437,10 +436,9 @@ export async function star(id: string) {
   if (!emailRes.ok || emailRes.status === 500) {
     const error = await emailRes.text();
     console.log(error);
-    return { error: "error occured" + error, status: 500 };
+    return JSON.stringify({ error: "error occured" + error, status: 500 });
   }
-  const data = await emailRes.text();
-  return { status: 200, error: null, data: data };
+  return JSON.stringify({ status: 200, error: null, data: "" });
 }
 
 export async function complete(id: string) {
@@ -448,11 +446,11 @@ export async function complete(id: string) {
   const token = cookieStore.get("token");
   if (!token) {
     console.log("no token");
-    return { error: "token not found", status: 500 };
+    return JSON.stringify({ error: "token not found", status: 500 });
   }
 
   if (!id) {
-    return { error: "no id", data: undefined, status: 404 };
+    return JSON.stringify({ error: "no id", data: undefined, status: 404 });
   }
 
   const emailRes = await fetch(
@@ -469,8 +467,7 @@ export async function complete(id: string) {
   if (!emailRes.ok || emailRes.status === 500) {
     const error = await emailRes.text();
     console.log(error);
-    return { error: "error occured" + error, status: 500 };
+    return JSON.stringify({ error: "error occured" + error, status: 500 });
   }
-  const data = await emailRes.text();
-  return { status: 200, error: null, data: data };
+  return JSON.stringify({ status: 200, error: null, data: "" });
 }

@@ -48,8 +48,9 @@ export default function Email({ emailD }: { emailD: EMAIL | null }) {
       await complete(email.id);
       updateLoading(true);
       await star(email.id);
-      const data = await getEmailFromId(email.id);
-      updateEmail(data.error === null ? data.data : null);
+      const data = await getEmailFromId(email.gmailId);
+      const emailDa: EMAIL | null = data.error === null ? data.data : null;
+      updateEmail(emailDa);
       updateLoading(false);
     }
   };
@@ -60,8 +61,9 @@ export default function Email({ emailD }: { emailD: EMAIL | null }) {
     }
     updateLoading(true);
     await star(email.id);
-    const data = await getEmailFromId(email.id);
-    updateEmail(data.error === null ? data.data : null);
+    const data = await getEmailFromId(email.gmailId);
+    const emailDa: EMAIL | null = data.error === null ? data.data : null;
+    updateEmail(emailDa);
     updateLoading(false);
   };
 
@@ -77,7 +79,11 @@ export default function Email({ emailD }: { emailD: EMAIL | null }) {
           {email.GmailSubject}
         </span>
         {email.isStared ? (
-          <Star fill='#111' className='cursor-pointer' onClick={toggleStar} />
+          <Star
+            fill='#eab308'
+            className='cursor-pointer'
+            onClick={toggleStar}
+          />
         ) : (
           <Star className='cursor-pointer' onClick={toggleStar} />
         )}
