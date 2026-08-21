@@ -407,7 +407,7 @@ export async function read(id: string, gmailId: string) {
     console.log(error);
     return { error: "error occured" + error, status: 500 };
   }
-  const data = await emailRes.json();
+  const data = await emailRes.text();
   return { status: 200, error: null, data: data };
 }
 
@@ -439,7 +439,7 @@ export async function star(id: string) {
     console.log(error);
     return { error: "error occured" + error, status: 500 };
   }
-  const data = await emailRes.json();
+  const data = await emailRes.text();
   return { status: 200, error: null, data: data };
 }
 
@@ -471,6 +471,6 @@ export async function complete(id: string) {
     console.log(error);
     return { error: "error occured" + error, status: 500 };
   }
-  const data = await emailRes.json();
+  const data = await emailRes.text();
   return { status: 200, error: null, data: data };
 }
