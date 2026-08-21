@@ -83,6 +83,7 @@ export async function getNewEmails(): Promise<string> {
 export async function saveFids(fid: string, tokenS: string) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token");
+  cookieStore.set("fid", fid);
   if (!token) {
     return JSON.stringify({ error: "token not found", status: 500 });
   }
@@ -470,4 +471,36 @@ export async function complete(id: string) {
     return JSON.stringify({ error: "error occured" + error, status: 500 });
   }
   return JSON.stringify({ status: 200, error: null, data: "" });
+}
+
+export async function logout() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+  const fid = cookieStore.get("fid");
+  if (!token) {
+    console.log("no token");
+    return { error: "token not found", status: 500 };
+  }
+
+  if (fid) {
+    const emailRes = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/remove`,
+      {
+        method: "GET",
+        signal: AbortSignal.timeout(480000),
+        headers: {
+          Authorization: `Bearer ${token!.value}`,
+        },
+      },
+    );
+
+    if (!emailRes.ok || emailRes.status === 500) {
+      const error = await emailRes.text();
+      console.log(error);
+    }
+  }
+  cookieStore.delete("token");
+  const host = (await headers()).get("host");
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  return redirect(`${protocol}://${host}/login`);
 }

@@ -19,6 +19,7 @@ import {
 import DropdownWidget from "./Dropdown";
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "../states/theme";
+import { logout } from "../actions";
 
 export default function Sidebar() {
   const { user, isLoading, token } = useUser();
@@ -39,7 +40,7 @@ export default function Sidebar() {
     },
     { name: "Settings", icon: Settings, id: "user", click: () => {} },
     { name: "profile", icon: User, id: "user", click: () => {} },
-    { name: "Logout", icon: LogOut, id: "user", click: () => {} },
+    { name: "Logout", icon: LogOut, id: "user", click: logout },
   ];
   const ids = [{ id: "main" }, { id: "user" }];
 
