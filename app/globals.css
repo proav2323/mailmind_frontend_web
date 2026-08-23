@@ -245,3 +245,11 @@ body {
 .active {
   background: var(--gradient-card);
 }
+
+.emails {
+  overflow-anchor: auto;
+}
+
+.spinner {
+  overflow-anchor: none;
+}

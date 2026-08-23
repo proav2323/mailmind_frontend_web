@@ -4,6 +4,7 @@ import { LucideProps } from "lucide-react";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 import { useSidebar } from "../states/sidebar";
 import { usePathname, useRouter } from "next/navigation";
+import { useEmails } from "../states/emails";
 
 export default function SidebarBtn({
   value,
@@ -19,8 +20,17 @@ export default function SidebarBtn({
   const { open } = useSidebar();
   const router = useRouter();
   const pathname = usePathname();
+  const { updateEmails, updateCursor } = useEmails();
 
   const click = () => {
+    if (
+      value.activeUrl === "/dashboard/inbox" &&
+      pathname !== value.activeUrl
+    ) {
+      console.log("running no emails");
+      updateEmails([], true, []);
+      updateCursor(undefined);
+    }
     router.push(value.activeUrl);
   };
 

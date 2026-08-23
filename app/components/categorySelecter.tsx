@@ -6,6 +6,7 @@ import { useState } from "react";
 import { deleteCatgeory, getUserCategories } from "../actions";
 import { useSnackBar } from "../states/snackbar";
 import { useCategories } from "../states/categories";
+import { useEmails } from "../states/emails";
 
 export default function CategorySelector({
   category,
@@ -20,7 +21,11 @@ export default function CategorySelector({
   const [isLoaidng, setIsLoading] = useState(false);
   const { showSnackBar } = useSnackBar();
   const { updateCategories } = useCategories();
+  const { updateCursor, updateMore, updateEmails } = useEmails();
   const filterCategory = () => {
+    updateCursor(undefined);
+    updateMore(true);
+    updateEmails([], true, []);
     let url = `/dashboard/inbox?`;
     if (prioritySearch) {
       url = url + `priority=${prioritySearch}&`;

@@ -13,6 +13,7 @@ import {
   Moon,
   Phone,
   Settings,
+  Star,
   Sun,
   User,
 } from "lucide-react";
@@ -99,6 +100,13 @@ export default function Sidebar() {
               activeUrl: "/dashboard/inbox",
               icon: Mail,
               name: "Inbox",
+            }}
+          />
+          <SidebarBtn
+            value={{
+              activeUrl: "/dashboard/inbox?starred=true",
+              icon: Star,
+              name: "Starred",
             }}
           />
           <SidebarBtn

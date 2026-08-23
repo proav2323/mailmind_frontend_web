@@ -28,9 +28,12 @@ export default function EmailInitializer() {
     if (!pathname.startsWith("/dashboard/inbox")) {
       console.log("email getting working", pathname);
       emails.updateLoading(true);
-      getUserEmails().then((value) => {
+      getUserEmails(undefined).then((value) => {
         if (value.error === null) {
-          emails.updateEmails(value.data ?? []);
+          emails.updateEmails(
+            value.data.emails.length >= 1 ? value.data.emails : [],
+            false,
+          );
         }
         emails.updateLoading(false);
       });

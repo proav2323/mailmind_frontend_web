@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { ChangeEvent } from "react";
+import { useEmails } from "../states/emails";
 
 export default function PrioritySelector({
   pririoties,
@@ -11,7 +12,11 @@ export default function PrioritySelector({
   prioritySearch: string | undefined;
 }) {
   const router = useRouter();
+  const { updateCursor, updateMore, updateEmails } = useEmails();
   const filter = (e: ChangeEvent<HTMLSelectElement, HTMLSelectElement>) => {
+    updateCursor(undefined);
+    updateMore(true);
+    updateEmails([], true, []);
     let url = `/dashboard/inbox?`;
     const value = e.target.value;
 

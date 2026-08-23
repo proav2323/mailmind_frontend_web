@@ -163,32 +163,6 @@ export async function seenNotifications() {
   return { status: 200, error: null, data: data };
 }
 
-export async function getUserEmails() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token");
-  if (!token) {
-    return { error: "token not found", status: 500 };
-  }
-
-  const emailRes = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/emails/user`,
-    {
-      method: "GET",
-      signal: AbortSignal.timeout(480000),
-      headers: {
-        Authorization: `Bearer ${token!.value}`,
-      },
-    },
-  );
-
-  if (!emailRes.ok || emailRes.status === 500) {
-    const error = await emailRes.text();
-    console.log(error);
-    return { error: "error occured" + error, status: 500 };
-  }
-  const data = await emailRes.json();
-  return { status: 200, error: null, data: data };
-}
 export async function getUserCategories() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token");
@@ -216,7 +190,40 @@ export async function getUserCategories() {
   return { status: 200, error: null, data: data };
 }
 
-export async function getFillterEmails(category?: string, priority?: string) {
+export async function getUserEmails(cursor?: string) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+  if (!token) {
+    return { error: "token not found", status: 500 };
+  }
+
+  const emailRes = await fetch(
+    cursor
+      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/emails/user?cursor=${cursor}`
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}/emails/user`,
+    {
+      method: "GET",
+      signal: AbortSignal.timeout(480000),
+      headers: {
+        Authorization: `Bearer ${token!.value}`,
+      },
+    },
+  );
+
+  if (!emailRes.ok || emailRes.status === 500) {
+    const error = await emailRes.text();
+    console.log(error);
+    return { error: "error occured" + error, status: 500 };
+  }
+  const data = await emailRes.json();
+  return { status: 200, error: null, data: data };
+}
+
+export async function getFillterEmails(
+  category?: string,
+  priority?: string,
+  cursor?: string,
+) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token");
   let url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/emails/filter?`;
@@ -226,10 +233,13 @@ export async function getFillterEmails(category?: string, priority?: string) {
   }
 
   if (category) {
-    url = url + `category=${category}`;
+    url = url + `category=${category}&`;
   }
   if (priority) {
-    url = url + `&priority=${priority}`;
+    url = url + `priority=${priority}&`;
+  }
+  if (cursor) {
+    url = url + `cursor=${cursor}&`;
   }
 
   const emailRes = await fetch(url, {
