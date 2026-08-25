@@ -34,7 +34,7 @@ export default function PrioritySelector({
     router.push(url);
   };
   return (
-    <div className='lg:w-[10%] md:w-[15%] w-[25%] pt-2 pb-2 pl-0 pr-0'>
+    <div className='w-[97%] pt-2 pb-2 pl-0 pr-0'>
       <select
         onChange={(e) => filter(e)}
         defaultValue={prioritySearch}

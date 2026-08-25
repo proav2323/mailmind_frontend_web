@@ -223,6 +223,9 @@ export async function getFillterEmails(
   category?: string,
   priority?: string,
   cursor?: string,
+  starred?: string,
+  dateStart?: string,
+  dateEnd?: string,
 ) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token");
@@ -240,6 +243,12 @@ export async function getFillterEmails(
   }
   if (cursor) {
     url = url + `cursor=${cursor}&`;
+  }
+  if (starred) {
+    url = url + `starred=${starred}&`;
+  }
+  if (dateStart && dateEnd) {
+    url = url + `dateStart=${dateStart}&dateEnd=${dateEnd}`;
   }
 
   const emailRes = await fetch(url, {

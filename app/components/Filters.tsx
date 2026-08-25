@@ -5,6 +5,8 @@ import { useCategories } from "../states/categories";
 import CategorySelector from "./categorySelecter";
 import PrioritySelector from "./PrioritySelector";
 import AddCategory from "./addCategory";
+import { MoreHorizontalIcon } from "lucide-react";
+import FiltersPopup from "./filtersPopup";
 
 export default function Filter({
   categories,
@@ -19,6 +21,7 @@ export default function Filter({
 }) {
   const category = useCategories();
   const [addOpen, setOpen] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
   const parentDiv = useRef<HTMLDivElement>(null);
   const [finalCategories, setFinalCategories] = useState<
     { name: string; id: undefined | string }[]
@@ -39,8 +42,13 @@ export default function Filter({
     console.log(addOpen);
   }
 
+  function togglePopup() {
+    setPopupOpen(!popupOpen);
+  }
+
   return (
-    <div className='w-full flex flex-row pt-2 pb-2 pl-0 pr-0 ml-0 mr-0 bg-[var(--bg-secondary)] gap-1 shrink-0 sticky md:top-[60] top-[100] z-2'>
+    <div className='w-full flex flex-row pt-2 pb-2 pl-0 pr-0 ml-0 mr-0 bg-[var(--bg-secondary)] gap-1 shrink-0 sticky md:top-[60] top-[100] z-2 relative'>
+      {popupOpen ? <FiltersPopup priorities={pririoties} /> : null}
       <div
         className='p-2 rounded-full flex flex-row justify-center items-center cursor-pointer text-lg font-bold relative z-20'
         ref={parentDiv}
@@ -67,11 +75,11 @@ export default function Filter({
           );
         })}
       </div>
-      <PrioritySelector
-        prioritySearch={prioritySearch}
-        catgeorySearch={catgeorySearch}
-        pririoties={pririoties}
-      />
+      <div className='w-fit pt-2 pb-2 pl-0 pr-0'>
+        <button className='p-2 cursor-pointer' onClick={togglePopup}>
+          <MoreHorizontalIcon />
+        </button>
+      </div>
     </div>
   );
 }

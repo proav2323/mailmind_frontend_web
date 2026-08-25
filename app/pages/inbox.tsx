@@ -79,6 +79,9 @@ export default function Inbox({
 
   const categorySearch = query.category;
   const prioritySearch = query.priority;
+  const starred = query.starred;
+  const dateStart = query.dateStart;
+  const dateEnd = query.dateEnd;
 
   const bottomDiv = useRef<HTMLDivElement>(null);
   const emailContainer = useRef<HTMLDivElement>(null);
@@ -92,19 +95,24 @@ export default function Inbox({
       };
     }
     console.log(categorySearch, prioritySearch);
-    if (categorySearch || prioritySearch) {
+    if (categorySearch || prioritySearch || starred || (dateStart && dateEnd)) {
       console.log("working filter search");
       updateLoading(true);
-      getFillterEmails(categorySearch, prioritySearch, nextCursor).then(
-        (value) => {
-          if (value.error === null) {
-            updateEmails(value.data.emails, nextCursor ? true : false, emails);
-            updateCursor(value.data.nextCursor);
-            updateMore(value.data.hasMore);
-          }
-          updateLoading(false);
-        },
-      );
+      getFillterEmails(
+        categorySearch,
+        prioritySearch,
+        nextCursor,
+        starred,
+        dateStart,
+        dateEnd,
+      ).then((value) => {
+        if (value.error === null) {
+          updateEmails(value.data.emails, nextCursor ? true : false, emails);
+          updateCursor(value.data.nextCursor);
+          updateMore(value.data.hasMore);
+        }
+        updateLoading(false);
+      });
     } else {
       updateLoading(true);
       getUserEmails(nextCursor).then((value) => {
