@@ -6,13 +6,19 @@ export default function DateFilter({
   catgeorySearch,
   prioritySearch,
   starred,
+  dateEnd,
+  dateStart,
 }: {
   catgeorySearch: string | undefined;
   prioritySearch: string | undefined;
   starred: string | undefined;
+  dateStart: string | undefined;
+  dateEnd: string | undefined;
 }) {
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>(
+    dateStart ? dateStart : "",
+  );
+  const [endDate, setEndDate] = useState<string>(dateEnd ? dateEnd : "");
 
   const dateStartInput = useRef<HTMLInputElement>(null);
   const dateEndInput = useRef<HTMLInputElement>(null);

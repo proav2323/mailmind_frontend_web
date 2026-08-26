@@ -42,6 +42,8 @@ export default function FiltersPopup({
             catgeorySearch={catgeorySearch}
             prioritySearch={prioritySearch}
             starred={starred}
+            dateEnd={dateEnd}
+            dateStart={dateStart}
           />
         </div>
       </div>
