@@ -6,10 +6,16 @@ export default function PrioritySelector({
   pririoties,
   catgeorySearch,
   prioritySearch,
+  starred,
+  dateEnd,
+  dateStart,
 }: {
   pririoties: { name: string; id: string }[];
   catgeorySearch: string | undefined;
   prioritySearch: string | undefined;
+  starred: string | undefined;
+  dateStart: string | undefined;
+  dateEnd: string | undefined;
 }) {
   const router = useRouter();
   const { updateCursor, updateMore, updateEmails } = useEmails();
@@ -23,12 +29,24 @@ export default function PrioritySelector({
     if (catgeorySearch) {
       url = url + `category=${catgeorySearch}&`;
     }
+    if (starred) {
+      url = url + `starred=${starred}&`;
+    }
+    if (dateEnd && dateStart) {
+      url = url + `dateEnd=${dateEnd}&dateStart=${dateStart}&`;
+    }
     if (value && value !== "----") {
       url = url + `priority=${value}`;
     } else {
       url = `/dashboard/inbox?`;
       if (catgeorySearch) {
         url = url + `category=${catgeorySearch}&`;
+      }
+      if (starred) {
+        url = url + `starred=${starred}&`;
+      }
+      if (dateEnd && dateStart) {
+        url = url + `dateEnd=${dateEnd}&dateStart=${dateStart}&`;
       }
     }
     router.push(url);

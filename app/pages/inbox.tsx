@@ -132,7 +132,7 @@ export default function Inbox({
 
   useEffect(() => {
     filterSearch();
-  }, [categorySearch, prioritySearch]);
+  }, [categorySearch, prioritySearch, starred, dateStart, dateEnd]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -165,6 +165,9 @@ export default function Inbox({
         pririoties={priorites}
         catgeorySearch={categorySearch}
         prioritySearch={prioritySearch}
+        starred={starred}
+        dateEnd={dateEnd}
+        dateStart={dateStart}
       />
       {emails.length === 0 && isLoading === false ? (
         <span className='mt-2 font-bold text-lg text-center w-full'>

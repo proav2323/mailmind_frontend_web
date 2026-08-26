@@ -12,10 +12,16 @@ export default function CategorySelector({
   category,
   categorySearch,
   prioritySearch,
+  starred,
+  dateEnd,
+  dateStart,
 }: {
   category: { name: string; id: undefined | string };
   categorySearch: string | undefined;
   prioritySearch: string | undefined;
+  starred: string | undefined;
+  dateStart: string | undefined;
+  dateEnd: string | undefined;
 }) {
   const router = useRouter();
   const [isLoaidng, setIsLoading] = useState(false);
@@ -30,10 +36,22 @@ export default function CategorySelector({
     if (prioritySearch) {
       url = url + `priority=${prioritySearch}&`;
     }
+    if (starred) {
+      url = url + `starred=${starred}&`;
+    }
+    if (dateEnd && dateStart) {
+      url = url + `dateEnd=${dateEnd}&dateStart=${dateStart}&`;
+    }
     if (category.name === categorySearch) {
       url = `/dashboard/inbox?`;
       if (prioritySearch) {
         url = url + `priority=${prioritySearch}&`;
+      }
+      if (starred) {
+        url = url + `starred=${starred}&`;
+      }
+      if (dateEnd && dateStart) {
+        url = url + `dateEnd=${dateEnd}&dateStart=${dateStart}&`;
       }
     } else {
       url = url + `category=${category.name}`;

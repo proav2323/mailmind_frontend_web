@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { useCategories } from "../states/categories";
 import CategorySelector from "./categorySelecter";
-import PrioritySelector from "./PrioritySelector";
 import AddCategory from "./addCategory";
 import { MoreHorizontalIcon } from "lucide-react";
 import FiltersPopup from "./filtersPopup";
@@ -13,11 +12,17 @@ export default function Filter({
   pririoties,
   catgeorySearch,
   prioritySearch,
+  starred,
+  dateEnd,
+  dateStart,
 }: {
   categories: { name: string }[];
   pririoties: { name: string; id: string }[];
   catgeorySearch: string | undefined;
   prioritySearch: string | undefined;
+  starred: string | undefined;
+  dateStart: string | undefined;
+  dateEnd: string | undefined;
 }) {
   const category = useCategories();
   const [addOpen, setOpen] = useState(false);
@@ -48,7 +53,17 @@ export default function Filter({
 
   return (
     <div className='w-full flex flex-row pt-2 pb-2 pl-0 pr-0 ml-0 mr-0 bg-[var(--bg-secondary)] gap-1 shrink-0 sticky md:top-[60] top-[100] z-2 relative'>
-      {popupOpen ? <FiltersPopup priorities={pririoties} /> : null}
+      {popupOpen ? (
+        <FiltersPopup
+          priorities={pririoties}
+          closeFilters={togglePopup}
+          catgeorySearch={catgeorySearch}
+          prioritySearch={prioritySearch}
+          starred={starred}
+          dateEnd={dateEnd}
+          dateStart={dateStart}
+        />
+      ) : null}
       <div
         className='p-2 rounded-full flex flex-row justify-center items-center cursor-pointer text-lg font-bold relative z-20'
         ref={parentDiv}
@@ -71,6 +86,9 @@ export default function Filter({
               key={idx}
               categorySearch={catgeorySearch}
               prioritySearch={prioritySearch}
+              starred={starred}
+              dateEnd={dateEnd}
+              dateStart={dateStart}
             />
           );
         })}

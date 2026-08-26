@@ -250,6 +250,7 @@ export async function getFillterEmails(
   if (dateStart && dateEnd) {
     url = url + `dateStart=${dateStart}&dateEnd=${dateEnd}`;
   }
+  console.log(starred);
 
   const emailRes = await fetch(url, {
     method: "GET",
