@@ -22,6 +22,7 @@ import { complete, getEmailFromId, star } from "../actions";
 import { useEmails } from "../states/emails";
 import Loader from "../components/loader";
 import EmailBox from "../components/emailBox";
+import ReplySendEmail from "../components/ReplySendEmail";
 
 export default function Email({ emailD }: { emailD: EMAIL | null }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -30,6 +31,11 @@ export default function Email({ emailD }: { emailD: EMAIL | null }) {
   const { isLoading, email, updateEmail, updateLoading } = useEmails();
 
   const [emailBox, setEmailBox] = useState(false);
+  const [replyEmail, setReplyEmail] = useState(false);
+
+  function toggleReplyEmail() {
+    setReplyEmail(!replyEmail);
+  }
 
   function toggleEmailBox() {
     setEmailBox(!emailBox);
@@ -81,7 +87,10 @@ export default function Email({ emailD }: { emailD: EMAIL | null }) {
   ];
 
   return email && isLoading === false ? (
-    <div className='w-[97%] h-full mt-2 flex flex-col justify-start items-center'>
+    <div className='w-[97%] h-full mt-2 flex flex-col justify-start items-center relative'>
+      {replyEmail ? (
+        <ReplySendEmail newE={false} closeR={toggleReplyEmail} />
+      ) : null}
       <div className='w-full flex flex-row justify-between items-center pt-2 pb-2'>
         <span className='font-bold text-md lg:text-lg'>
           {email.GmailSubject}
@@ -130,7 +139,11 @@ export default function Email({ emailD }: { emailD: EMAIL | null }) {
                 gmailId={email.gmailId}
               />
             ) : null}
-            <Reply size={25} className='cursor-pointer' />
+            <Reply
+              size={25}
+              className='cursor-pointer'
+              onClick={toggleReplyEmail}
+            />
             <Forward
               size={25}
               className='cursor-pointer'
