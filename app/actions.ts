@@ -524,3 +524,43 @@ export async function logout() {
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
   return redirect(`${protocol}://${host}/login`);
 }
+
+export async function forwardMail(
+  recieverEmailAddress: string,
+  emailGmailId: string,
+) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+
+  if (!token) {
+    console.log("no token");
+    return { error: "token not found", status: 500 };
+  }
+
+  if (!emailGmailId || !recieverEmailAddress) {
+    return { error: "no id", data: undefined, status: 404 };
+  }
+
+  const emailRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/emails/forward`,
+    {
+      method: "PUT",
+      signal: AbortSignal.timeout(480000),
+      headers: {
+        Authorization: `Bearer ${token!.value}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        senderEmailAddress: recieverEmailAddress,
+        forwardEmailGmailId: emailGmailId,
+      }),
+    },
+  );
+
+  if (!emailRes.ok || emailRes.status === 500) {
+    const error = await emailRes.text();
+    console.log(error);
+    return { error: "error occured" + error, status: 500 };
+  }
+  return { status: 200, error: null, data: "" };
+}

@@ -21,11 +21,19 @@ import Attachment from "../components/Attachment";
 import { complete, getEmailFromId, star } from "../actions";
 import { useEmails } from "../states/emails";
 import Loader from "../components/loader";
+import EmailBox from "../components/emailBox";
 
 export default function Email({ emailD }: { emailD: EMAIL | null }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const parentDiv = useRef<HTMLDivElement>(null);
+  const emailParentDiv = useRef<HTMLDivElement>(null);
   const { isLoading, email, updateEmail, updateLoading } = useEmails();
+
+  const [emailBox, setEmailBox] = useState(false);
+
+  function toggleEmailBox() {
+    setEmailBox(!emailBox);
+  }
 
   useEffect(() => {
     if (emailD) {
@@ -111,9 +119,23 @@ export default function Email({ emailD }: { emailD: EMAIL | null }) {
           <span className='text-sm text-[var(--text-secondary)]'>
             {new Date(email.receivedAt).toLocaleString()}
           </span>
-          <div className='w-full flex flex-row justify-center'>
+          <div
+            className='w-full flex flex-row justify-center relative'
+            ref={emailParentDiv}
+          >
+            {emailBox ? (
+              <EmailBox
+                parentDiv={emailParentDiv}
+                closeBox={toggleEmailBox}
+                gmailId={email.gmailId}
+              />
+            ) : null}
             <Reply size={25} className='cursor-pointer' />
-            <Forward size={25} className='cursor-pointer' />
+            <Forward
+              size={25}
+              className='cursor-pointer'
+              onClick={toggleEmailBox}
+            />
             <ChevronDown
               size={25}
               className='cursor-pointer'
