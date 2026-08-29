@@ -228,14 +228,15 @@ export default function Email({ emailD }: { emailD: EMAIL | null }) {
             .sort((a, b) => b.i - a.i)
             .map((body, idx) => {
               const cleanHtml =
-                body.type === "text/html" ? DOMPurify.sanitize(body.data) : "";
+                body.type === "text/html"
+                  ? DOMPurify.sanitize(body.data)
+                  : DOMPurify.sanitize(body.data);
               return body.type === "text/plain" ? (
                 <div
                   className='w-[95%] text-start text-wrap wrap-break-word'
+                  dangerouslySetInnerHTML={{ __html: cleanHtml }}
                   key={idx}
-                >
-                  {body.data}
-                </div>
+                ></div>
               ) : (
                 <div
                   key={idx}
