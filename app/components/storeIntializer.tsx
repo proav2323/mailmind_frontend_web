@@ -18,7 +18,7 @@ export default function StoreInitializer({
   token: string | null;
 }) {
   const { updateUser, updateToken } = useUser();
-  const { connectSocket } = useGlobalSocket();
+  const { connectSocket, socket } = useGlobalSocket();
   const { updateOpen } = useSidebar();
   const { updateTheme } = useTheme();
   const { updateLoading, updateNotifications, notifications, isLoading } =

@@ -8,6 +8,7 @@ import React, {
   useState,
 } from "react";
 import { io, Socket } from "socket.io-client";
+import { useEmails } from "../states/emails";
 
 interface SocketContextType {
   socket: Socket | null;
@@ -29,6 +30,7 @@ const SOCKET_SERVER_URL =
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const { updateEmails, emails } = useEmails();
 
   const connectSocket = useCallback(
     (token: string) => {

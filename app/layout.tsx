@@ -8,6 +8,8 @@ import { useTheme } from "./states/theme";
 import { ThemeIntailzioer } from "./components/ThemeIntializer";
 import { useEffect, useState } from "react";
 import SyncToast from "./components/SyncingNewEmails";
+import { useEmails } from "./states/emails";
+import { getEmailFromId } from "./actions";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +28,7 @@ export default function RootLayout({
 }>) {
   const { theme } = useTheme();
   const SOCKET = useGlobalSocket();
+  const { updateEmails, emails } = useEmails();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -34,17 +37,21 @@ export default function RootLayout({
         setIsLoading(true);
       });
 
-      SOCKET.socket.on("newEmail", () => {
+      SOCKET.socket.on("newEmail", async (value) => {
+        const data = await getEmailFromId(value.id);
+        if (data.error === null) {
+          updateEmails([data.data!], true, emails);
+        }
         setIsLoading(false);
       });
     }
   }, [SOCKET.isConnected, SOCKET.socket]);
   return (
     <html
-      lang='en'
+      lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased ${theme === "dark" ? "dark" : "light"}`}
     >
-      <body className='min-h-full flex flex-col'>
+      <body className="min-h-full flex flex-col">
         <SocketProvider>
           {children}
           {isLoading ? <SyncToast /> : null}
