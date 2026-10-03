@@ -33,9 +33,7 @@ export default function HOME({
   const router = useRouter();
   const { todaysEmail, emailsDueThisWeek, highPriorityEmails } = data;
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const emails = emailsDueThisWeek.filter(
-    (email) => new Date(email.deadline) >= new Date(),
-  );
+  const emails = emailsDueThisWeek;
   return isLoading === true || user === null ? (
     <div className="flex flex-col flex-1 items-center justify-center  font-sans min-h-screen">
       <Loader />
