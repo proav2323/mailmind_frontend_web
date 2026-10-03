@@ -2,12 +2,19 @@
 import { useRouter } from "next/navigation";
 import { EMAILS } from "../models/emails";
 
-export default function EmailCard({ email }: { email: EMAILS }) {
-  const router = useRouter();
+export default function EmailCard({
+  email,
+  click,
+  borderColor,
+}: {
+  email: EMAILS;
+  click: () => void;
+  borderColor?: string;
+}) {
   return (
     <div
-      onClick={() => router.push(`/dashboard/email/${email.gmailId}`)}
-      className={`w-[97%] pt-3 pb-3 rounded-md border border-[var(--border)] flex flex-col gap-1 cursor-pointer ${email.isRead === true ? "font-normal" : "font-extrabold"}`}
+      onClick={click}
+      className={`w-[97%] pt-3 pb-3 rounded-md border ${borderColor || "border-[var(--border)]"} flex flex-col gap-1 cursor-pointer ${email.isRead === true ? "font-normal" : "font-extrabold"}`}
     >
       <div className={`mr-2 flex flex-row gap-2 justify-end items-center`}>
         <span className={`bg-[var(--bg-card)] rounded-full p-2 font-bold`}>
@@ -19,11 +26,11 @@ export default function EmailCard({ email }: { email: EMAILS }) {
           {email.priority}
         </span>
       </div>
-      <div className='flex-1 min-w-0 flex flex-col justify-start items-start ml-2'>
-        <span className='text-sm text-[var(--text-secondary)]'>
+      <div className="flex-1 min-w-0 flex flex-col justify-start items-start ml-2">
+        <span className="text-sm text-[var(--text-secondary)]">
           {email.sender.split("<")[0]}
         </span>
-        <span className='text-sm md:text-md'>
+        <span className="text-sm md:text-md">
           {window.window.innerWidth >= 1024
             ? email.subject.length >= 180
               ? email.subject.slice(0, 100) + "..."
@@ -32,7 +39,7 @@ export default function EmailCard({ email }: { email: EMAILS }) {
               ? email.subject.slice(0, 20) + "..."
               : email.subject}
         </span>
-        <span className='text-sm md:text-md'>
+        <span className="text-sm md:text-md">
           {window.window.innerWidth >= 1024
             ? email.summary.length >= 180
               ? email.summary.slice(0, 100) + "..."
@@ -42,7 +49,7 @@ export default function EmailCard({ email }: { email: EMAILS }) {
               : email.summary}
         </span>
       </div>
-      <span className='text-sm md:text-md text-end mr-2 text-[var(--text-secondary)]'>
+      <span className="text-sm md:text-md text-end mr-2 text-[var(--text-secondary)]">
         {new Date(email.receivedAt).toLocaleString("en-IN")}
       </span>
     </div>

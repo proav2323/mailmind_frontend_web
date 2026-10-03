@@ -8,6 +8,7 @@ import { useEmails } from "../states/emails";
 import { useUser } from "../states/user";
 import { getFillterEmails, getUserEmails } from "../actions";
 import EmailCard from "../components/EmailCard";
+import { useRouter } from "next/navigation";
 
 export default function Inbox({
   query,
@@ -82,6 +83,7 @@ export default function Inbox({
   const starred = query.starred;
   const dateStart = query.dateStart;
   const dateEnd = query.dateEnd;
+  const router = useRouter();
 
   const bottomDiv = useRef<HTMLDivElement>(null);
   const emailContainer = useRef<HTMLDivElement>(null);
@@ -159,7 +161,7 @@ export default function Inbox({
   }, [bottomDiv.current, filterSearch]);
 
   return user !== null && category.isLoading !== true ? (
-    <div className='flex flex-col mt-0 justify-start items-center w-full shrink-0'>
+    <div className="flex flex-col mt-0 justify-start items-center w-full shrink-0">
       <Filter
         categories={categroies}
         pririoties={priorites}
@@ -170,32 +172,38 @@ export default function Inbox({
         dateStart={dateStart}
       />
       {emails.length === 0 && isLoading === false ? (
-        <span className='mt-2 font-bold text-lg text-center w-full'>
+        <span className="mt-2 font-bold text-lg text-center w-full">
           no emails found
         </span>
       ) : emails.length >= 1 ? (
         <div
-          className='w-full mt-2 justify-center flex flex-col items-center z-1 gap-2 overflow-y-auto emails'
+          className="w-full mt-2 justify-center flex flex-col items-center z-1 gap-2 overflow-y-auto emails"
           ref={emailContainer}
         >
           {emails.map((email) => {
-            return <EmailCard key={email.id} email={email} />;
+            return (
+              <EmailCard
+                click={() => router.push(`/dashboard/email/${email.gmailId}`)}
+                key={email.id}
+                email={email}
+              />
+            );
           })}
-          <div className='w-full h-10' ref={bottomDiv}></div>
+          <div className="w-full h-10" ref={bottomDiv}></div>
           {isLoading ? (
-            <div className='w-full pt-2 pb-2 mt-2 flex flex-row justify-center items-center spinner'>
+            <div className="w-full pt-2 pb-2 mt-2 flex flex-row justify-center items-center spinner">
               <Loader />
             </div>
           ) : null}
         </div>
       ) : (
-        <div className='w-full min-h-screen flex flex-row justify-center items-center'>
+        <div className="w-full min-h-screen flex flex-row justify-center items-center">
           <Loader />
         </div>
       )}
     </div>
   ) : (
-    <div className='w-full min-h-screen flex flex-row justify-center items-center'>
+    <div className="w-full min-h-screen flex flex-row justify-center items-center">
       <Loader />
     </div>
   );
