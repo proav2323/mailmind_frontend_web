@@ -262,6 +262,13 @@ body {
   background: var(--gradient-card);
 }
 
+.compose {
+  background: linear-gradient(135deg, #2b87ff 0%, #0f52cc 100%);
+  color: #ffffff;
+  font-weight: bold;
+  transition: all ease-in-out 0.3s;
+}
+
 .emails {
   overflow-anchor: auto;
 }

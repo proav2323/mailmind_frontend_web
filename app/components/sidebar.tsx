@@ -12,6 +12,7 @@ import {
   Mail,
   Moon,
   Phone,
+  Send,
   Settings,
   Star,
   Sun,
@@ -78,16 +79,23 @@ export default function Sidebar() {
       ref={sidebarDiv}
       className={`${open ? "xl:w-[18vw] lg:w-[28vw] w-[80%] flex lg:flex" : "lg:w-[8vw] xl:w-[5vw] hidden lg:flex"}  lg:flex lg:sticky fixed slide z-[100] top-0 left-0 h-screen bg-[var(--bg-sidebar)] transition-all ease-in-out duration-300 flex-col items-center shrink-0`}
     >
-      <div className='h-15 p-2 bg-[var(--bg-secondary)] shadow-md border-[var(--border-light)] flex flex-row justify-center items-center cursor-pointer w-full'>
-        <Image src={logo} alt='logo' width={50} />
+      <div className="h-15 p-2 bg-[var(--bg-secondary)] shadow-md border-[var(--border-light)] flex flex-row justify-center items-center cursor-pointer w-full">
+        <Image src={logo} alt="logo" width={50} />
         {open ? (
-          <span className='text-lg font-bold text-[#1077F9]'>
-            Mail<span className='text-[#2E2E8F] font-bold text-lg'>Mind</span>
+          <span className="text-lg font-bold text-[#1077F9]">
+            Mail<span className="text-[#2E2E8F] font-bold text-lg">Mind</span>
           </span>
         ) : null}
       </div>
-      <div className='w-full flex flex-col justify-center items-center mt-2 h-[95%]'>
-        <div className='w-[95%] flex flex-col justify-start items-center pt-2 pb-2 h-full overflow-y-scroll scrollbar-none gap-2'>
+      <div className="w-full flex flex-col justify-center items-center mt-2 h-[95%]">
+        <div className="w-[95%] flex flex-col justify-start items-center pt-2 pb-2 h-full overflow-y-scroll scrollbar-none gap-2">
+          <div
+            onClick={() => {}}
+            className={`flex flex-row w-full  pl-2 pr-2 pt-3 pb-3 font-bold compose text-[var(--text-secondary)]  gap-2 cursor-pointer ${open ? "justify-start items-center" : "justify-center items-center"} transition-all ease-in-out duration-500 drop-shadow-blue-300 rounded-md hover:bg-[var(--bg-primary)] `}
+          >
+            <Send />
+            {open ? <span className="text-sm">Compose</span> : null}
+          </div>
           <SidebarBtn
             value={{
               activeUrl: "/dashboard",
@@ -125,22 +133,22 @@ export default function Sidebar() {
           />
         </div>
         <div
-          className='relative h-[150] w-full transition-all ease-in-out duration-300 flex flex-row justify-center items-end'
+          className="relative h-[150] w-full transition-all ease-in-out duration-300 flex flex-row justify-center items-end"
           ref={dropdownParentDiv}
           onClick={() => closeDroddown()}
         >
-          <div className='w-[95%] h-fit cursor-pointer relative flex flex-row justify-center items-center gap-2 mb-2'>
+          <div className="w-[95%] h-fit cursor-pointer relative flex flex-row justify-center items-center gap-2 mb-2">
             <Image
               src={user.photoUrl}
               width={30}
               height={30}
-              alt='profile photo'
-              className='rounded-full'
+              alt="profile photo"
+              className="rounded-full"
             />
             {open ? (
-              <div className='w-full flex flex-col justify-center items-start'>
-                <span className='text-sm'>{user.name}</span>
-                <span className='text-sm'>{user.email}</span>
+              <div className="w-full flex flex-col justify-center items-start">
+                <span className="text-sm">{user.name}</span>
+                <span className="text-sm">{user.email}</span>
               </div>
             ) : null}
           </div>

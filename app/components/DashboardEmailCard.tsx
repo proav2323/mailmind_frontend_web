@@ -26,7 +26,7 @@ export default function DashboardEmailCard({ id }: { id: string }) {
     <div className="w-full">
       <Loader />
     </div>
-  ) : email ? (
+  ) : email !== null ? (
     <div className="active border-1 border-[var(--border)] rounded-lg p-2 flex-col gap-2 hidden lg:flex">
       <div className="flex flex-row justify-start items-center gap-2">
         <span

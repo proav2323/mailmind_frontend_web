@@ -82,7 +82,7 @@ export default function HOME({
               })}
             </div>
           ) : null}
-          <div className="flex-1 w-full flex-col gap-2  rounded-lg p-2">
+          <div className="flex-1 sticky top-[60px] flex flex-col gap-2 rounded-lg p-2">
             {selectedId !== null ? (
               <DashboardEmailCard id={selectedId} />
             ) : null}
