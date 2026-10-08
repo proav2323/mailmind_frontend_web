@@ -7,6 +7,7 @@ import StoreInitializer from "../components/storeIntializer";
 import { getUser } from "../page";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import ComposeEmail from "../components/ComposeEmail";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,10 +34,10 @@ export default async function RootLayout({
     return redirect(`${protocol}://${host}/`);
   }
   return (
-    <div className='min-h-full flex flex-col'>
-      <div className='flex flex-row justify-between w-full items-start h-full shrink-0'>
+    <div className="min-h-full flex flex-col">
+      <div className="flex flex-row justify-between w-full items-start h-full shrink-0">
         <Sidebar />
-        <div className='flex-1 min-w-0 p-0 m-0 pl-0 pr-0 pt-0 pb-0'>
+        <div className="flex-1 min-w-0 p-0 m-0 pl-0 pr-0 pt-0 pb-0 relative">
           <Navbar />
           {children}
         </div>

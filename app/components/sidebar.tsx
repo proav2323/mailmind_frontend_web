@@ -22,6 +22,7 @@ import DropdownWidget from "./Dropdown";
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "../states/theme";
 import { logout } from "../actions";
+import { useCompose } from "../states/compose";
 
 export default function Sidebar() {
   const { user, isLoading, token } = useUser();
@@ -30,6 +31,7 @@ export default function Sidebar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownParentDiv = useRef<HTMLDivElement | null>(null);
   const sidebarDiv = useRef<HTMLDivElement>(null);
+  const compose = useCompose();
 
   const items = [
     {
@@ -74,6 +76,7 @@ export default function Sidebar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   return user ? (
     <div
       ref={sidebarDiv}
@@ -90,7 +93,7 @@ export default function Sidebar() {
       <div className="w-full flex flex-col justify-center items-center mt-2 h-[95%]">
         <div className="w-[95%] flex flex-col justify-start items-center pt-2 pb-2 h-full overflow-y-scroll scrollbar-none gap-2">
           <div
-            onClick={() => {}}
+            onClick={() => compose.showSnackBar()}
             className={`flex flex-row w-full  pl-2 pr-2 pt-3 pb-3 font-bold compose text-[var(--text-secondary)]  gap-2 cursor-pointer ${open ? "justify-start items-center" : "justify-center items-center"} transition-all ease-in-out duration-500 drop-shadow-blue-300 rounded-md hover:bg-[var(--bg-primary)] `}
           >
             <Send />

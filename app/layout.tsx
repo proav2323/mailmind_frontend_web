@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import SyncToast from "./components/SyncingNewEmails";
 import { useEmails } from "./states/emails";
 import { getEmailFromId } from "./actions";
+import ComposeEmail from "./components/ComposeEmail";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,11 +54,12 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <SocketProvider>
-          {children}
-          {isLoading ? <SyncToast /> : null}
           <Toast />
           <NotificationListner />
           <ThemeIntailzioer />
+          <ComposeEmail />
+          {isLoading ? <SyncToast /> : null}
+          {children}
         </SocketProvider>
       </body>
     </html>
