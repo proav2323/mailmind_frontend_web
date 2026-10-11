@@ -594,3 +594,67 @@ export async function getUserDashboard() {
   const data = await emailRes.json();
   return { status: 200, error: null, data: data };
 }
+
+export async function getChatResponse(query: string, id?: string) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+
+  if (!token) {
+    console.log("no token");
+    return { error: "token not found", status: 500 };
+  }
+
+  const emailRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/agent/chat`,
+    {
+      method: "POST",
+      signal: AbortSignal.timeout(480000),
+      body: JSON.stringify({
+        query: query,
+        id: id ?? null,
+      }),
+      headers: {
+        Authorization: `Bearer ${token!.value}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!emailRes.ok || emailRes.status === 500) {
+    const error = await emailRes.text();
+    console.log(error);
+    return { error: "error occured" + error, status: 500 };
+  }
+  const data = await emailRes.json();
+  return { status: 200, error: null, data: data };
+}
+
+export async function getMessages() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+
+  if (!token) {
+    console.log("no token");
+    return { error: "token not found", status: 500 };
+  }
+
+  const emailRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/agent/messages`,
+    {
+      method: "GET",
+      signal: AbortSignal.timeout(480000),
+      headers: {
+        Authorization: `Bearer ${token!.value}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!emailRes.ok || emailRes.status === 500) {
+    const error = await emailRes.text();
+    console.log(error);
+    return { error: "error occured" + error, status: 500 };
+  }
+  const data = await emailRes.json();
+  return { status: 200, error: null, data: data };
+}
