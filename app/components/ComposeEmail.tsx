@@ -33,9 +33,10 @@ export default function ComposeEmail({ id }: { id?: string }) {
     }
 
     setMessageLoading(true);
+    setQuery("");
     const check = await getChatResponse(query, emailId);
     if (check.error === null) {
-      const data = await getMessages();
+      const data = await getMessages(emailId);
       if (data.error === null) {
         setEmailData(data.data[0]);
       } else {
@@ -125,8 +126,15 @@ export default function ComposeEmail({ id }: { id?: string }) {
                           ? JSON.parse(data.query)
                           : data.query;
                       return (
-                        <div key={`${data.role}-${new Date().getDate()}`}>
-                          ={JSON.stringify(response)}
+                        <div
+                          className="rounded-t-md rounded-br-md p-2 min-w-fit max-w-full"
+                          key={`${data.role}-${new Date().getDate()}`}
+                        >
+                          {data.role === "model"
+                            ? response.result === "null"
+                              ? "I CAN'T HELP YOU WITH THAT"
+                              : `"${response.result}" ${response.feedback}`
+                            : response}
                         </div>
                       );
                     })
@@ -144,7 +152,8 @@ export default function ComposeEmail({ id }: { id?: string }) {
               />
               <button
                 onClick={() => sendMessage()}
-                className="p-2 rounded-md rounded-md cursor-pointer bg-[var(--bg-secondary)] hover:bg-[var(--border)] transition-all ease-in-out duration-500"
+                disabled={messageLoading}
+                className="p-2 disabled:cursor-not-allowed rounded-md rounded-md cursor-pointer bg-[var(--bg-secondary)] hover:bg-[var(--border)] transition-all ease-in-out duration-500"
               >
                 Send
               </button>

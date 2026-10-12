@@ -629,7 +629,7 @@ export async function getChatResponse(query: string, id?: string) {
   return { status: 200, error: null, data: data };
 }
 
-export async function getMessages() {
+export async function getMessages(id: string) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token");
 
@@ -639,7 +639,7 @@ export async function getMessages() {
   }
 
   const emailRes = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/agent/messages`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/agent/messages/${id}`,
     {
       method: "GET",
       signal: AbortSignal.timeout(480000),
