@@ -6,7 +6,7 @@ import { getChatResponse, getMessages } from "../actions";
 import { useSnackBar } from "../states/snackbar";
 import { generateId } from "../utills/functions";
 
-export default function ComposeEmail({ id }: { id?: string }) {
+export default function ComposeEmail() {
   const compose = useCompose();
   const [query, setQuery] = useState<string>("");
   const [subject, setSubject] = useState<string>("");
@@ -19,7 +19,8 @@ export default function ComposeEmail({ id }: { id?: string }) {
     messages: any[];
   } | null>(null);
   const snackbar = useSnackBar();
-  const emailId = id ?? generateId(8);
+  const emailCompose = useCompose();
+  const emailId = emailCompose.id;
 
   const sendMessage = async () => {
     if (

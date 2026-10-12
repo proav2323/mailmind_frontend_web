@@ -3,13 +3,15 @@ import { create, StoreApi, UseBoundStore } from "zustand";
 export const useCompose: UseBoundStore<
   StoreApi<{
     snackbar: { show: boolean };
-    showSnackBar: () => void;
+    id: string;
+    showSnackBar: (id: string) => void;
     hideSnackBar: () => void;
   }>
 > = create((set) => ({
   snackbar: { show: false },
-  showSnackBar: () => {
-    set({ snackbar: { show: true } });
+  id: "",
+  showSnackBar: (id: string) => {
+    set({ snackbar: { show: true }, id: id });
   },
   hideSnackBar: () => {
     set({ snackbar: { show: false } });
