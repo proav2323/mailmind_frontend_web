@@ -38,7 +38,7 @@ export default function ComposeEmail({ id }: { id?: string }) {
     if (check.error === null) {
       const data = await getMessages(emailId);
       if (data.error === null) {
-        setEmailData(data.data[0]);
+        setEmailData(data.data);
       } else {
         setEmailData(null);
         snackbar.showSnackBar(data.error, "error");
