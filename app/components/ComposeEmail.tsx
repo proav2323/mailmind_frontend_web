@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { useCompose } from "../states/compose";
 import { getChatResponse, getMessages } from "../actions";
 import { useSnackBar } from "../states/snackbar";
+import { generateId } from "../utills/functions";
 
-export default function ComposeEmail() {
+export default function ComposeEmail({ id }: { id?: string }) {
   const compose = useCompose();
   const [query, setQuery] = useState<string>("");
   const [subject, setSubject] = useState<string>("");
@@ -18,6 +19,7 @@ export default function ComposeEmail() {
     messages: any[];
   } | null>(null);
   const snackbar = useSnackBar();
+  const emailId = id ?? generateId(8);
 
   const sendMessage = async () => {
     if (
@@ -31,11 +33,11 @@ export default function ComposeEmail() {
     }
 
     setMessageLoading(true);
-    const check = await getChatResponse(query);
+    const check = await getChatResponse(query, emailId);
     if (check.error === null) {
       const data = await getMessages();
       if (data.error === null) {
-        setEmailData(data.data);
+        setEmailData(data.data[0]);
       } else {
         setEmailData(null);
         snackbar.showSnackBar(data.error, "error");
@@ -118,7 +120,15 @@ export default function ComposeEmail() {
               <div className="flex flex-col gap-2 w-full justify-start items-start">
                 {emailData != null && emailData.messages.length > 0
                   ? emailData.messages.map((data) => {
-                      return <div>{data.parts[0]}</div>;
+                      const response =
+                        data.role === "model"
+                          ? JSON.parse(data.query)
+                          : data.query;
+                      return (
+                        <div key={`${data.role}-${new Date().getDate()}`}>
+                          ={JSON.stringify(response)}
+                        </div>
+                      );
                     })
                   : null}
                 {messageLoading ? <div>...</div> : null}
