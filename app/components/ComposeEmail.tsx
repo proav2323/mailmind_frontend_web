@@ -116,7 +116,7 @@ export default function ComposeEmail() {
       {/* Main compose window */}
       <div
         className={`flex flex-col w-full sm:w-[90%] xl:w-[85%]
-          max-w-[1400px] min-w-0 min-h-0 shrink-0
+          max-w-[1400px] min-w-0 min-h-0 shrink-0 slide
           rounded-md bg-[var(--bg-secondary)] shadow-xl
           overflow-hidden ${
             minimized ? "h-auto max-h-[90vh]" : "h-[85dvh] max-h-[900px]"
