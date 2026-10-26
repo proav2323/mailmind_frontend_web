@@ -8,20 +8,28 @@ const serif = Source_Serif_4({ subsets: ["latin"], variable: "--font-serif" });
 // TODO: replace every value below with your real details.
 export const LEGAL = {
   app: "MailMind",
-  company: "[Your Company Name]",
-  address: "[Your registered address]",
-  supportEmail: "support@mailmind.app",
-  privacyEmail: "privacy@mailmind.app",
-  jurisdiction: "[Your country/state]",
+  company: "MailMind",
+  address: "",
+  supportEmail: "support.mailmind@gmail.com",
+  privacyEmail: "privacy.mailmind@gmail.com",
+  jurisdiction: "India",
   updated: "October 27, 2026",
 };
 
 export type LegalSection = { id: string; title: string; body: ReactNode };
 
-export function Callout({ title, children }: { title: string; children: ReactNode }) {
+export function Callout({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
   return (
     <div className="my-6 rounded-md border-l-4 border-[#2f5bea] bg-[#eaf0ff] px-5 py-4 text-[0.97rem] [&>p:last-child]:mb-0">
-      <p className="!mb-2 font-[family-name:var(--font-sans)] font-semibold">{title}</p>
+      <p className="!mb-2 font-[family-name:var(--font-sans)] font-semibold">
+        {title}
+      </p>
       {children}
     </div>
   );
@@ -45,12 +53,19 @@ export function LegalLayout({
     >
       <header className="border-b border-[#e3e7ee] bg-white font-[family-name:var(--font-sans)]">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className={`text-lg font-semibold tracking-tight ${link}`}>
+          <Link
+            href="/"
+            className={`text-lg font-semibold tracking-tight ${link}`}
+          >
             {LEGAL.app}
           </Link>
           <nav className="flex gap-5 text-sm text-[#5b6678]">
-            <Link href="/privacy" className={link}>Privacy Policy</Link>
-            <Link href="/terms" className={link}>Terms of Service</Link>
+            <Link href="/privacy" className={link}>
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className={link}>
+              Terms of Service
+            </Link>
           </nav>
         </div>
       </header>
